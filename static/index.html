@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="__LANG__" dir="__DIR__">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>__TITLE__</title>
+  <meta name="description" content="__DESCRIPTION__" />
+  <meta name="keywords" content="__KEYWORDS__" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="__TITLE__" />
+  <meta property="og:description" content="__DESCRIPTION__" />
+  <meta property="og:site_name" content="AI Watermarks Remover" />
+  <meta property="og:url" content="__CANONICAL__" />
+  <meta property="og:locale" content="__OG_LOCALE__" />
+  <meta property="og:image" content="__OG_IMAGE__" />
+  <meta property="og:image:alt" content="__OG_IMAGE_ALT__" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="__TITLE__" />
+  <meta name="twitter:description" content="__DESCRIPTION__" />
+  <meta name="twitter:image" content="__OG_IMAGE__" />
+  <link rel="canonical" href="__CANONICAL__" />
+  __HREFLANGS__
+  <script type="application/ld+json">__SCHEMA_JSON__</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css?v=__ASSET_VERSION__" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="AI Watermarks Remover home">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="img"><path d="M24 4 6 12v12c0 10.8 7.5 17.2 18 20 10.5-2.8 18-9.2 18-20V12L24 4Z"/><path d="M16 22.5h16M18.5 29h11"/><circle cx="24" cy="16" r="3.5"/></svg>
+        </span>
+        <span>AI Watermarks Remover</span>
+      </a>
+      <div class="top-actions">
+        <label class="language-label" for="languageSelect" data-i18n="language">Language</label>
+        <select id="languageSelect" aria-label="Language selector"></select>
+      </div>
+    </header>
+
+    <section class="workspace" aria-labelledby="headline">
+      <div class="intro-card">
+        <p class="eyebrow" data-i18n="eyebrow">Open. Clean. Download.</p>
+        <h1 id="headline" data-i18n="brandTitle">__BRAND_TITLE__</h1>
+        <p class="subtitle" data-i18n="subtitle">__SUBTITLE__</p>
+        <div class="trust-row" aria-label="Supported cleanup targets">
+          <span data-i18n="targetUnicode">Hidden Unicode</span>
+          <span data-i18n="targetMetadata">Metadata</span>
+          <span data-i18n="targetDocs">Document traces</span>
+        </div>
+      </div>
+
+      <section class="tool-card" aria-label="Watermark cleaning tool">
+        <div class="tabs" role="tablist" aria-label="Tool mode">
+          <button class="tab active" type="button" data-mode="file" data-i18n="fileTab">File</button>
+          <button class="tab" type="button" data-mode="text" data-i18n="textTab">Text</button>
+        </div>
+
+        <form id="fileForm" class="tool-panel active" data-panel="file">
+          <label class="dropzone" for="fileInput">
+            <input id="fileInput" name="file" type="file" required />
+            <span class="drop-symbol">+</span>
+            <strong id="fileLabel" data-i18n="chooseFile">Choose file</strong>
+            <small data-i18n="fileHint">txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB</small>
+          </label>
+          <div class="upload-progress hidden" id="uploadProgress" aria-label="Upload progress">
+            <span id="uploadProgressBar"></span>
+          </div>
+          <div class="compact-controls">
+            <select name="force_type" aria-label="File type">
+              <option value="auto" data-i18n="autoDetect">Auto detect file type</option>
+              <option value="text" data-i18n="asText">Text</option>
+              <option value="image" data-i18n="asImage">Image</option>
+              <option value="container" data-i18n="asDocument">Document</option>
+            </select>
+            <label><input type="checkbox" name="nfkc" /> <span data-i18n="nfkc">Normalize text</span><button class="tip" type="button" data-tooltip-i18n="nfkcTip" aria-label="Explain normalize text">?</button></label>
+            <label><input type="checkbox" name="aggressive_homoglyphs" /> <span data-i18n="deepClean">Deep text clean</span><button class="tip" type="button" data-tooltip-i18n="deepCleanTip" aria-label="Explain deep text clean">?</button></label>
+            <label><input type="checkbox" name="keep_non_ai_metadata" /> <span data-i18n="keepMetadata">Keep safe image metadata</span><button class="tip" type="button" data-tooltip-i18n="keepMetadataTip" aria-label="Explain safe image metadata">?</button></label>
+          </div>
+          <div class="action-row single-action">
+            <button type="submit" class="primary clean-main" data-i18n="cleanDownload">Clean watermark</button>
+          </div>
+        </form>
+
+        <section class="tool-panel" data-panel="text">
+          <textarea id="textInput" data-i18n-placeholder="textPlaceholder" placeholder="Paste text here..."></textarea>
+          <div class="action-row">
+            <button id="cleanTextBtn" class="primary" type="button" data-i18n="cleanText">Clean text</button>
+            <button id="copyTextBtn" type="button" data-i18n="copyResult">Copy result</button>
+          </div>
+        </section>
+      </section>
+
+      <aside class="result-card" aria-live="polite">
+        <div class="result-top">
+          <div>
+            <p class="eyebrow" data-i18n="resultLabel">Result</p>
+            <h2 id="resultTitle" data-i18n="readyTitle">Ready to clean</h2>
+          </div>
+          <div class="result-actions">
+            <a id="downloadLink" class="download hidden" href="#" data-i18n="download">Download file</a>
+            <p id="expiryNotice" class="expiry-note hidden" data-i18n="expiresNotice">Download soon: cleaned files are deleted after 10 minutes.</p>
+            <p id="textSuccess" class="success-note hidden" data-i18n="cleanedTextReady">Text cleaned and placed back in the box.</p>
+          </div>
+        </div>
+        <ol class="steps" id="steps">
+          <li class="pending" data-i18n="stepUpload">Upload or paste content</li>
+          <li class="pending" data-i18n="stepScan">Scan for watermarks and traces</li>
+          <li class="pending" data-i18n="stepClean">Clean supported traces</li>
+        </ol>
+        <div class="summary-grid" id="summaryGrid">
+          <div><span data-i18n="removedCount">Removed</span><strong id="removedCount">0</strong></div>
+          <div><span data-i18n="traceTypes">Trace types</span><strong id="traceTypes">0</strong></div>
+        </div>
+        <div class="clear-list" id="clearList">
+          <p data-i18n="readyMessage">Choose a file or paste text. You will see exactly what was found and removed.</p>
+          <ul class="ready-traces">
+            <li><strong>Unicode</strong><span data-i18n="targetUnicode">Hidden Unicode</span></li>
+            <li><strong>C2PA / EXIF / XMP</strong><span data-i18n="targetMetadata">Metadata</span></li>
+            <li><strong>PDF / DOCX</strong><span data-i18n="targetDocs">Document traces</span></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="seo-copy" aria-labelledby="seoTitle">
+      <h2 id="seoTitle">__SEO_HEADING__</h2>
+      <p>__SEO_BODY__</p>
+      <div class="seo-grid">__SEO_POINTS__</div>
+      <div class="faq-list">__FAQ_HTML__</div>
+    </section>
+  </main>
+  <script src="/static/app.js?v=__ASSET_VERSION__"></script>
+</body>
+</html>

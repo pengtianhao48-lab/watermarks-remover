@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0f7f4"/>
+      <stop offset="1" stop-color="#eef4ff"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="48" fill="url(#bg)"/>
+  <rect x="76" y="76" width="1048" height="478" rx="42" fill="white" opacity="0.88"/>
+  <rect x="120" y="126" width="116" height="116" rx="34" fill="url(#mark)"/>
+  <path d="M178 146l-45 19v46c0 42 30 68 45 74 15-6 45-32 45-74v-46l-45-19z" fill="white" opacity="0.95"/>
+  <path d="M158 202h40M164 220h28" stroke="#0f3f3a" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="178" cy="181" r="10" fill="none" stroke="#0f3f3a" stroke-width="8"/>
+  <text x="270" y="178" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="900" fill="#111827">AI Watermarks Remover</text>
+  <text x="270" y="246" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f766e">Claude watermark remover · C2PA metadata cleaner</text>
+  <text x="120" y="350" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#111827">Remove visible marks, hidden Unicode, Content Credentials, EXIF/XMP and document traces.</text>
+  <text x="120" y="430" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#64748b">Open. Check first. Clean. Download.</text>
+</svg>

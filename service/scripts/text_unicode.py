@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import html
+import re
 import unicodedata
 from collections import Counter
 from dataclasses import dataclass, field
+from html.parser import HTMLParser
 
 # Format / invisible controls commonly used for steganography or broken pastes.
 STRIP_CODEPOINTS: frozenset[int] = frozenset(
@@ -189,6 +192,120 @@ _BIDI_CPS: frozenset[int] = frozenset(
 _ZW_FAMILY: frozenset[int] = frozenset(
     {0x200B, 0x200C, 0x200D, 0x2060, 0xFEFF, 0x180E}
 )
+
+_HTML_ENTITY_RE = re.compile(r"&(?:#\d+|#x[0-9a-f]+|[a-z][a-z0-9]+);", re.I)
+_HTML_TAG_RE = re.compile(r"<[A-Za-z!/][^>]*>")
+_HIDDEN_STYLE_RE = re.compile(
+    r"(?:display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0(?:px|pt|pc|em|rem|%|cm|mm|in)?)",
+    re.I,
+)
+
+
+class _VisibleHTMLTextExtractor(HTMLParser):
+    _BLOCK_TAGS = {
+        "address",
+        "article",
+        "aside",
+        "blockquote",
+        "br",
+        "dd",
+        "div",
+        "dl",
+        "dt",
+        "figcaption",
+        "footer",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "header",
+        "li",
+        "main",
+        "nav",
+        "p",
+        "section",
+        "td",
+        "th",
+        "tr",
+    }
+    _ALWAYS_HIDDEN_TAGS = {"script", "style", "template", "noscript"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self._hidden_markers: list[bool] = []
+        self._hidden_depth = 0
+
+    def _append_space(self) -> None:
+        if not self.parts:
+            return
+        if self.parts[-1].endswith((" ", "\n")):
+            return
+        self.parts.append(" ")
+
+    def _is_hidden(self, tag: str, attrs: dict[str, str]) -> bool:
+        if tag in self._ALWAYS_HIDDEN_TAGS:
+            return True
+        if "hidden" in attrs:
+            return True
+        if attrs.get("aria-hidden", "").strip().lower() == "true":
+            return True
+        style = attrs.get("style", "")
+        if style and _HIDDEN_STYLE_RE.search(style):
+            return True
+        return False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        attr_map = {str(key).lower(): (value or "") for key, value in attrs}
+        hidden = self._is_hidden(tag, attr_map)
+        self._hidden_markers.append(hidden)
+        if hidden:
+            self._hidden_depth += 1
+            return
+        if tag in self._BLOCK_TAGS:
+            self._append_space()
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.handle_starttag(tag, attrs)
+        if self._hidden_markers:
+            hidden = self._hidden_markers.pop()
+            if hidden:
+                self._hidden_depth -= 1
+        if tag.lower() in self._BLOCK_TAGS:
+            self._append_space()
+
+    def handle_endtag(self, tag: str) -> None:
+        if self._hidden_markers:
+            hidden = self._hidden_markers.pop()
+            if hidden and self._hidden_depth:
+                self._hidden_depth -= 1
+        if self._hidden_depth == 0 and tag.lower() in self._BLOCK_TAGS:
+            self._append_space()
+
+    def handle_data(self, data: str) -> None:
+        if not self._hidden_depth and data:
+            self.parts.append(data)
+
+    def get_text(self) -> str:
+        return "".join(self.parts)
+
+
+def _preclean_html_text(text: str) -> str:
+    if "<" not in text and "&" not in text:
+        return text
+    unescaped = html.unescape(text)
+    if _HTML_TAG_RE.search(unescaped):
+        parser = _VisibleHTMLTextExtractor()
+        parser.feed(unescaped)
+        parser.close()
+        extracted = parser.get_text()
+        return re.sub(r"\s+", " ", extracted).strip()
+    if _HTML_ENTITY_RE.search(text):
+        return unescaped
+    return text
 
 
 def _is_private_use(cp: int) -> bool:
@@ -457,6 +574,8 @@ def clean_text(
     strip_emoji_glue: bool = False,
 ) -> tuple[str, dict]:
     """Return cleaned text and a stats dict."""
+    original_text = text
+    text = _preclean_html_text(text)
     removed: Counter[str] = Counter()
     replaced: Counter[str] = Counter()
     out_chars: list[str] = []
@@ -494,7 +613,7 @@ def clean_text(
     # Collapse runs of spaces only if we introduced space replacements? Keep conservative: no.
 
     stats = {
-        "input_length": len(text),
+        "input_length": len(original_text),
         "output_length": len(result),
         "removed": dict(removed),
         "replaced": dict(replaced),

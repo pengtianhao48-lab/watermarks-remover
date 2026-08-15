@@ -13,8 +13,18 @@ import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
 from common import classify_finding_confidence, safe_arg, safe_write_bytes, safe_write_text, subprocess_preexec_fn, which
 from image_meta import AI_META_HINTS, C2PA_MARKERS, run_optional_tools
+
+try:
+    from pypdf import PdfReader, PdfWriter
+except Exception:  # pragma: no cover - optional dependency fallback
+    try:
+        from PyPDF2 import PdfReader, PdfWriter  # type: ignore[assignment]
+    except Exception:  # pragma: no cover - optional dependency fallback
+        PdfReader = None  # type: ignore[assignment]
+        PdfWriter = None  # type: ignore[assignment]
 
 # Frontmatter / meta keys that often carry AI provenance
 AI_FRONTMATTER_KEYS = frozenset(
@@ -737,6 +747,42 @@ def _pdf_structural_rewrite(dest: Path, actions: list[str]) -> bool:
     return False
 
 
+def _clean_pdf_with_pypdf(path: Path, dest: Path) -> tuple[list[str], dict] | None:
+    if PdfReader is None or PdfWriter is None:
+        return None
+    try:
+        reader = PdfReader(str(path), strict=False)
+        writer = PdfWriter()
+        page_count = 0
+        for page in reader.pages:
+            if "/Metadata" in page:
+                del page["/Metadata"]
+            writer.add_page(page)
+            page_count += 1
+        writer.add_metadata({})
+        with dest.open("wb") as handle:
+            writer.write(handle)
+        cleaned = dest.read_bytes()
+        stripped_xmp, xmp_count = re.subn(
+            rb"<\?xpacket begin.*?<\?xpacket end[^?]*\?>",
+            b"",
+            cleaned,
+            flags=re.I | re.DOTALL,
+        )
+        if xmp_count:
+            safe_write_bytes(dest, stripped_xmp)
+            cleaned = stripped_xmp
+        has_c2pa, has_ai, findings, _ = inspect_pdf(dest, cleaned)
+        if has_c2pa or has_ai:
+            raise ValueError(f"pypdf rewrite left findings: {findings[:5]}")
+        actions = [f"pypdf rewrite ({page_count} pages)"]
+        if xmp_count:
+            actions.append(f"stripped XMP xpacket x{xmp_count} after rewrite")
+        return actions, {"mode": "pypdf", "pages": page_count}
+    except Exception:
+        return None
+
+
 def clean_pdf(path: Path, dest: Path) -> tuple[list[str], dict]:
     """Best-effort PDF clean. Prefers exiftool; falls back to XMP strip warning."""
     actions: list[str] = []
@@ -775,6 +821,10 @@ def clean_pdf(path: Path, dest: Path) -> tuple[list[str], dict]:
         if c2patool:
             actions.append("c2patool available for inspect; strip via exiftool/re-export")
         return actions, {"mode": "exiftool", "structural_rewrite": rewritten}
+
+    pypdf_result = _clean_pdf_with_pypdf(path, dest)
+    if pypdf_result is not None:
+        return pypdf_result
 
     # Degraded: strip obvious XMP packets between <?xpacket begin and end
     text = data

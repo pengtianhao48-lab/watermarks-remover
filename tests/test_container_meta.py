@@ -342,4 +342,39 @@ def test_pdf_degraded_clean_without_crash(tmp_path: Path):
     actions, meta = clean_pdf(src, dest)
     assert dest.is_file()
     assert actions
-    assert meta.get("mode") in ("exiftool", "stdlib-xmp", "copy")
+    assert meta.get("mode") in ("exiftool", "pypdf", "stdlib-xmp", "copy")
+
+
+def test_pdf_pypdf_clean_removes_info_metadata(tmp_path: Path):
+    from pypdf import PdfWriter
+
+    from container_meta import clean_pdf, inspect_pdf
+
+    src = tmp_path / "report.pdf"
+    dest = tmp_path / "report.cleaned.pdf"
+
+    writer = PdfWriter()
+    writer.add_blank_page(width=72, height=72)
+    writer.add_metadata(
+        {
+            "/Author": "Claude",
+            "/Creator": "AIGC pipeline",
+            "/Keywords": "trainedAlgorithmicMedia; OpenAI",
+            "/Subject": "AI generated sample",
+        }
+    )
+    with src.open("wb") as handle:
+        writer.write(handle)
+
+    has_c2pa, has_ai, findings, _ = inspect_pdf(src, src.read_bytes())
+    assert has_ai or findings
+
+    actions, meta = clean_pdf(src, dest)
+    assert dest.is_file()
+    assert actions
+    assert meta.get("mode") in ("exiftool", "pypdf")
+
+    has_c2pa_after, has_ai_after, findings_after, _ = inspect_pdf(dest, dest.read_bytes())
+    assert not has_c2pa_after
+    assert not has_ai_after
+    assert not findings_after

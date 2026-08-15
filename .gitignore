@@ -36,3 +36,9 @@
 posts.md
 *.cleaned.*
 *.bak
+*.png.bak
+*.jpg.bak
+batch-test-samples/
+batch-test-downloads/
+batch-test-results/
+batch-test-screenshots/
