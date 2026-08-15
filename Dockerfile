@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt .
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libimage-exiftool-perl \
+    && apt-get install -y --no-install-recommends libimage-exiftool-perl qpdf \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir -r requirements.txt
 

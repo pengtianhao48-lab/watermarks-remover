@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 
 ROOT = Path(__file__).resolve().parent
-SCRIPTS = ROOT / "skills" / "remove-ai-marks" / "scripts"
+SCRIPTS = ROOT / "service" / "scripts"
 STATIC = ROOT / "static"
 MAX_UPLOAD_BYTES = 32 * 1024 * 1024
 OUTPUT_RETENTION_SECONDS = 10 * 60

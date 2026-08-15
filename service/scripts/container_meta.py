@@ -704,6 +704,12 @@ def inspect_pdf(path: Path, data: bytes) -> tuple[bool, bool, list[str], dict]:
     return has_c2pa, has_ai or has_c2pa, findings, {"tools": tools}
 
 
+def _verify_clean_pdf(path: Path) -> tuple[bool, list[str]]:
+    data = path.read_bytes()
+    has_c2pa, has_ai, findings, _details = inspect_pdf(path, data)
+    return not (has_c2pa or has_ai), findings
+
+
 def _pdf_structural_rewrite(dest: Path, actions: list[str]) -> bool:
     """Rebuild a PDF so unreferenced objects are dropped.
 
@@ -750,6 +756,7 @@ def _pdf_structural_rewrite(dest: Path, actions: list[str]) -> bool:
 def _clean_pdf_with_pypdf(path: Path, dest: Path) -> tuple[list[str], dict] | None:
     if PdfReader is None or PdfWriter is None:
         return None
+    tmp_dest = dest if path != dest else dest.with_name(dest.name + ".pypdf-tmp")
     try:
         reader = PdfReader(str(path), strict=False)
         writer = PdfWriter()
@@ -760,9 +767,9 @@ def _clean_pdf_with_pypdf(path: Path, dest: Path) -> tuple[list[str], dict] | No
             writer.add_page(page)
             page_count += 1
         writer.add_metadata({})
-        with dest.open("wb") as handle:
+        with tmp_dest.open("wb") as handle:
             writer.write(handle)
-        cleaned = dest.read_bytes()
+        cleaned = tmp_dest.read_bytes()
         stripped_xmp, xmp_count = re.subn(
             rb"<\?xpacket begin.*?<\?xpacket end[^?]*\?>",
             b"",
@@ -770,16 +777,18 @@ def _clean_pdf_with_pypdf(path: Path, dest: Path) -> tuple[list[str], dict] | No
             flags=re.I | re.DOTALL,
         )
         if xmp_count:
-            safe_write_bytes(dest, stripped_xmp)
-            cleaned = stripped_xmp
-        has_c2pa, has_ai, findings, _ = inspect_pdf(dest, cleaned)
-        if has_c2pa or has_ai:
+            safe_write_bytes(tmp_dest, stripped_xmp)
+        ok, findings = _verify_clean_pdf(tmp_dest)
+        if not ok:
             raise ValueError(f"pypdf rewrite left findings: {findings[:5]}")
+        if tmp_dest != dest:
+            tmp_dest.replace(dest)
         actions = [f"pypdf rewrite ({page_count} pages)"]
         if xmp_count:
             actions.append(f"stripped XMP xpacket x{xmp_count} after rewrite")
-        return actions, {"mode": "pypdf", "pages": page_count}
+        return actions, {"mode": "pypdf", "pages": page_count, "verified_clean": True}
     except Exception:
+        tmp_dest.unlink(missing_ok=True)
         return None
 
 
@@ -816,11 +825,23 @@ def clean_pdf(path: Path, dest: Path) -> tuple[list[str], dict]:
         # revert them with -PDF-update:all=). A structural rewrite is what
         # actually drops the now-unreferenced objects.
         rewritten = _pdf_structural_rewrite(dest, actions)
+        ok, findings = _verify_clean_pdf(dest)
         c2patool = which("c2patool")
         # c2patool does not always strip; leave note
         if c2patool:
             actions.append("c2patool available for inspect; strip via exiftool/re-export")
-        return actions, {"mode": "exiftool", "structural_rewrite": rewritten}
+        if ok:
+            return actions, {"mode": "exiftool", "structural_rewrite": rewritten, "verified_clean": True}
+        actions.append(f"post-clean findings remain after exiftool/qpdf: {findings[:5]}")
+        if rewritten:
+            pypdf_result = _clean_pdf_with_pypdf(dest, dest)
+            if pypdf_result is not None:
+                fallback_actions, meta = pypdf_result
+                actions.append("fallback to pypdf after exiftool/qpdf verification failure")
+                actions.extend(fallback_actions)
+                meta["fallback_from"] = "exiftool"
+                return actions, meta
+        return actions, {"mode": "exiftool", "structural_rewrite": rewritten, "verified_clean": False}
 
     pypdf_result = _clean_pdf_with_pypdf(path, dest)
     if pypdf_result is not None:
