@@ -81,8 +81,107 @@ const steps = Array.from(document.querySelectorAll('#steps li'));
 const clearList = document.querySelector('#clearList');
 const removedCount = document.querySelector('#removedCount');
 const traceTypes = document.querySelector('#traceTypes');
+const sessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+const pendingUmamiEvents = [];
 
 function t(key) { return dictionary[key] || reportCopy.zh[key] || fallback[key] || key; }
+
+function flushPendingUmamiEvents() {
+  if (typeof window.umami?.track !== 'function' || !pendingUmamiEvents.length) return;
+  pendingUmamiEvents.splice(0).forEach(({ name, properties }) => {
+    window.umami.track(name, properties);
+  });
+}
+
+function trackEvent(name, properties = {}) {
+  const payload = {
+    locale: currentLocale,
+    path_locale: pathLocale || 'en',
+    page_path: window.location.pathname || '/',
+    session_id: sessionId,
+    ...properties,
+  };
+  if (typeof window.umami?.track !== 'function') {
+    pendingUmamiEvents.push({ name, properties: payload });
+    return;
+  }
+  window.umami.track(name, payload);
+}
+
+function bucketFileSize(bytes = 0) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return 'unknown';
+  if (bytes < 100 * 1024) return '<100kb';
+  if (bytes < 1024 * 1024) return '100kb-1mb';
+  if (bytes < 5 * 1024 * 1024) return '1mb-5mb';
+  if (bytes < 10 * 1024 * 1024) return '5mb-10mb';
+  if (bytes < 32 * 1024 * 1024) return '10mb-32mb';
+  return '32mb+';
+}
+
+function bucketTextLength(text = '') {
+  const length = text.length;
+  if (!length) return 'empty';
+  if (length < 100) return '<100';
+  if (length < 500) return '100-499';
+  if (length < 2000) return '500-1999';
+  if (length < 10000) return '2000-9999';
+  return '10000+';
+}
+
+function getFileExtension(name = '') {
+  const segments = String(name).toLowerCase().split('.');
+  return segments.length > 1 ? segments.pop() : 'unknown';
+}
+
+function getFileKind(file) {
+  const extension = getFileExtension(file?.name);
+  if ((file?.type || '').startsWith('image/')) return 'image';
+  if (['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'svg'].includes(extension)) return 'image';
+  if (['pdf', 'doc', 'docx', 'odt', 'rtf'].includes(extension)) return 'document';
+  if (['txt', 'md', 'html', 'htm', 'csv', 'json', 'xml'].includes(extension)) return 'text';
+  return 'other';
+}
+
+function getSelectedFileMeta() {
+  const file = fileInput.files?.[0];
+  if (!file) return { has_file: false };
+  return {
+    has_file: true,
+    file_name: file.name,
+    file_extension: getFileExtension(file.name),
+    file_kind: getFileKind(file),
+    file_size_bucket: bucketFileSize(file.size),
+    file_size_bytes: file.size,
+    file_mime: file.type || 'unknown',
+  };
+}
+
+function getFileFormOptions() {
+  return {
+    force_type: fileForm.elements.force_type?.value || 'auto',
+    nfkc: fileForm.elements.nfkc?.checked ? 'true' : 'false',
+    aggressive_homoglyphs: fileForm.elements.aggressive_homoglyphs?.checked ? 'true' : 'false',
+    keep_non_ai_metadata: fileForm.elements.keep_non_ai_metadata?.checked ? 'true' : 'false',
+  };
+}
+
+function getErrorType(error) {
+  const message = String(error?.message || 'unknown_error').toLowerCase();
+  if (message.includes('network')) return 'network_error';
+  if (message.includes('failed')) return 'request_failed';
+  if (message.includes('timeout')) return 'timeout';
+  if (message.includes('invalid')) return 'invalid_input';
+  return message.slice(0, 80).replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'unknown_error';
+}
+
+function getSummaryMetrics(summary) {
+  return {
+    removed_count: summary.count || 0,
+    trace_type_count: summary.typeCount || 0,
+    result_item_count: summary.items.length || 0,
+    has_download: summary.downloadUrl ? 'true' : 'false',
+  };
+}
 
 function initLanguage() {
   Object.entries(localeNames).forEach(([code, name]) => {
@@ -93,6 +192,10 @@ function initLanguage() {
     languageSelect.append(option);
   });
   languageSelect.addEventListener('change', () => {
+    trackEvent('language_switched', {
+      from_locale: currentLocale,
+      to_locale: languageSelect.value,
+    });
     localStorage.setItem('preferredLocale', languageSelect.value);
     window.location.href = languageSelect.value === 'en' ? '/' : `/${languageSelect.value}`;
   });
@@ -239,6 +342,7 @@ function renderResult(payload, mode = 'clean') {
   setSteps(3);
   textSuccess.classList.toggle('hidden', mode !== 'text');
   expiryNotice.classList.toggle('hidden', !summary.downloadUrl);
+  return summary;
 }
 
 function renderReady() {
@@ -268,51 +372,125 @@ document.querySelectorAll('.tab').forEach((tab) => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach((item) => item.classList.toggle('active', item === tab));
     document.querySelectorAll('.tool-panel').forEach((panel) => panel.classList.toggle('active', panel.dataset.panel === tab.dataset.mode));
+    trackEvent('tab_switched', { mode: tab.dataset.mode });
   });
 });
 
 fileInput.addEventListener('change', () => {
   const file = fileInput.files?.[0];
   fileLabel.textContent = file ? `${t('fileSelected')}: ${file.name}` : t('chooseFile');
+  if (file) {
+    trackEvent('file_selected', {
+      ...getSelectedFileMeta(),
+      ...getFileFormOptions(),
+    });
+  }
   renderReady();
 });
 
 fileForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!fileForm.reportValidity()) return;
+  const fileMeta = getSelectedFileMeta();
+  const formOptions = getFileFormOptions();
+  trackEvent('clean_watermark_clicked', {
+    category: 'file',
+    ...fileMeta,
+    ...formOptions,
+  });
   renderMessage(t('cleaningTitle'), t('cleaning'), 2);
   try {
     const payload = await postForm('/api/clean', formDataWithBooleans(fileForm));
-    renderResult(payload, 'clean');
+    const summary = renderResult(payload, 'clean');
+    trackEvent('clean_succeeded', {
+      category: 'file',
+      ...fileMeta,
+      ...formOptions,
+      ...getSummaryMetrics(summary),
+    });
     if (payload.download_url) {
       downloadLink.href = `${payload.download_url}?name=${encodeURIComponent(payload.download_name || 'cleaned-file')}`;
       downloadLink.download = payload.download_name || 'cleaned-file';
       downloadLink.classList.remove('hidden');
     }
   } catch (error) {
+    trackEvent('clean_failed', {
+      category: 'file',
+      ...fileMeta,
+      ...formOptions,
+      error_type: getErrorType(error),
+      error_message: String(error.message || '').slice(0, 160),
+    });
     renderMessage(t('errorTitle'), error.message, 1);
   }
 });
 
 cleanTextBtn.addEventListener('click', async () => {
   const data = new FormData();
-  data.set('text', textInput.value);
+  const textValue = textInput.value;
+  const textMetrics = {
+    category: 'text',
+    text_length_bucket: bucketTextLength(textValue),
+    text_length: textValue.length,
+    line_count: textValue ? textValue.split(/\n/).length : 0,
+  };
+  data.set('text', textValue);
   data.set('nfkc', 'false');
   data.set('aggressive_homoglyphs', 'true');
+  trackEvent('clean_watermark_clicked', textMetrics);
   renderMessage(t('cleaningTitle'), t('cleaningText'), 2);
   try {
     const payload = await postForm('/api/clean-text', data);
     textInput.value = payload.cleaned_text || '';
-    renderResult(payload, 'text');
+    const summary = renderResult(payload, 'text');
+    trackEvent('clean_succeeded', {
+      ...textMetrics,
+      ...getSummaryMetrics(summary),
+    });
+    trackEvent('text_clean_succeeded', {
+      ...textMetrics,
+      ...getSummaryMetrics(summary),
+      cleaned_text_length: textInput.value.length,
+    });
   } catch (error) {
+    trackEvent('clean_failed', {
+      ...textMetrics,
+      error_type: getErrorType(error),
+      error_message: String(error.message || '').slice(0, 160),
+    });
     renderMessage(t('errorTitle'), error.message, 1);
   }
 });
 
 copyTextBtn.addEventListener('click', async () => {
   await navigator.clipboard.writeText(textInput.value);
+  trackEvent('copy_result_clicked', {
+    category: 'text',
+    text_length_bucket: bucketTextLength(textInput.value),
+    text_length: textInput.value.length,
+  });
   copyTextBtn.textContent = t('copied');
   setTimeout(() => { copyTextBtn.textContent = t('copyResult'); }, 1300);
+});
+
+downloadLink.addEventListener('click', () => {
+  trackEvent('download_file_clicked', {
+    category: 'file',
+    download_name: downloadLink.download || 'cleaned-file',
+    href_present: downloadLink.getAttribute('href') ? 'true' : 'false',
+    ...getSelectedFileMeta(),
+  });
+});
+
+fileForm.querySelectorAll('select, input[type="checkbox"]').forEach((element) => {
+  element.addEventListener('change', () => {
+    trackEvent('file_form_option_changed', {
+      control_name: element.name || element.id || 'unknown',
+      control_value: element.type === 'checkbox' ? (element.checked ? 'true' : 'false') : element.value,
+      ...getFileFormOptions(),
+      ...getSelectedFileMeta(),
+    });
+  });
 });
 
 function showTooltip(tip) {
@@ -345,7 +523,12 @@ document.querySelectorAll('.tip').forEach((tip) => {
       if (item !== tip) item.classList.remove('show-tooltip');
     });
     tip.classList.toggle('show-tooltip');
-    if (tip.classList.contains('show-tooltip')) showTooltip(tip); else hideTooltip();
+    if (tip.classList.contains('show-tooltip')) {
+      trackEvent('tooltip_opened', {
+        control_label: tip.previousElementSibling?.textContent?.trim() || tip.getAttribute('aria-label') || 'tooltip',
+      });
+      showTooltip(tip);
+    } else hideTooltip();
   });
   tip.addEventListener('mouseenter', () => showTooltip(tip));
   tip.addEventListener('mouseleave', () => {
@@ -357,6 +540,37 @@ document.addEventListener('click', () => {
   document.querySelectorAll('.tip').forEach((tip) => tip.classList.remove('show-tooltip'));
   hideTooltip();
 });
+
+document.addEventListener('click', (event) => {
+  const summary = event.target.closest('summary');
+  if (!summary) return;
+  const details = summary.closest('details');
+  if (!details) return;
+  window.setTimeout(() => {
+    if (!details.open) return;
+    if (clearList.contains(details)) {
+      trackEvent('technical_report_expanded', {
+        summary_label: summary.textContent.trim(),
+      });
+      return;
+    }
+    const faqItem = summary.closest('.faq-list details');
+    if (faqItem) {
+      const index = Array.from(document.querySelectorAll('.faq-list details')).indexOf(faqItem);
+      trackEvent('faq_expanded', {
+        faq_index: index + 1,
+        faq_question: summary.textContent.trim().slice(0, 160),
+      });
+    }
+  }, 0);
+});
+
+trackEvent('page_loaded', {
+  referrer: document.referrer || 'direct',
+  query_string_present: window.location.search ? 'true' : 'false',
+});
+window.setTimeout(flushPendingUmamiEvents, 250);
+window.addEventListener('load', flushPendingUmamiEvents);
 
 initLanguage();
 applyTranslations();
