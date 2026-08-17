@@ -186,6 +186,21 @@ def _make_docx_with_app(app_name: str = "Claude AI Writer") -> bytes:
             f'<?xml version="1.0"?><Properties><Application>{app_name}</Application></Properties>',
         )
         zf.writestr(
+            "_rels/.rels",
+            """<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml" Target="customXml/item1.xml"/>
+</Relationships>""",
+        )
+        zf.writestr(
+            "word/_rels/document.xml.rels",
+            """<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rIdCustom" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml" Target="../customXml/item1.xml"/>
+</Relationships>""",
+        )
+        zf.writestr(
             "customXml/item1.xml",
             '<?xml version="1.0"?><root>c2pa contentcredentials</root>',
         )
@@ -200,8 +215,51 @@ def test_docx_strips_app_and_customxml(tmp_path: Path):
         names = zf.namelist()
         assert "word/document.xml" in names
         assert not any(n.startswith("customXml/") for n in names)
+        assert "customXml" not in zf.read("[Content_Types].xml").decode()
+        assert "customXml" not in zf.read("_rels/.rels").decode()
+        assert "customXml" not in zf.read("word/_rels/document.xml.rels").decode()
         app = zf.read("docProps/app.xml").decode()
         assert "Claude" not in app
+
+
+def test_docx_scrubs_ai_core_and_app_fields():
+    data = _make_docx_with_ai_props()
+    cleaned, actions = clean_docx(data)
+    assert any("trainedAlgorithmicMedia" in a or "AIGC" in a for a in actions)
+    with zipfile.ZipFile(io.BytesIO(cleaned)) as zf:
+        core = zf.read("docProps/core.xml").decode()
+        app = zf.read("docProps/app.xml").decode()
+        assert "trainedAlgorithmicMedia" not in core
+        assert "AIGC" not in app
+        assert "word/document.xml" in zf.namelist()
+
+
+def _make_docx_with_ai_props() -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr(
+            "[Content_Types].xml",
+            """<?xml version="1.0"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+  <Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+</Types>""",
+        )
+        zf.writestr(
+            "word/document.xml",
+            '<?xml version="1.0"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>Hello</w:t></w:r></w:p></w:body></w:document>',
+        )
+        zf.writestr(
+            "docProps/core.xml",
+            '<?xml version="1.0"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:ai="https://example.com/ai"><ai:trainedAlgorithmicMedia>true</ai:trainedAlgorithmicMedia></cp:coreProperties>',
+        )
+        zf.writestr(
+            "docProps/app.xml",
+            '<?xml version="1.0"?><Properties xmlns:ai="https://example.com/ai"><ai:AIGC>true</ai:AIGC><Application>Microsoft Word</Application></Properties>',
+        )
+    return buf.getvalue()
 
 
 def _make_docx_with_body_text(body_text: str = "Claude wrote this.") -> bytes:

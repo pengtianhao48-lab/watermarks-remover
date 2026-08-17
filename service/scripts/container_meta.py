@@ -53,7 +53,7 @@ AI_FRONTMATTER_KEYS = frozenset(
 
 AI_META_NAME_RE = re.compile(
     r"generator|ai[-_ ]?generated|claude|anthropic|openai|gemini|synthid|"
-    r"c2pa|content.?credential|provenance|digital.?source|aigc",
+    r"c2pa|content.?credential|provenance|digital.?source|trained.?algorithmic.?media|aigc",
     re.I,
 )
 
@@ -493,83 +493,119 @@ def inspect_docx(data: bytes) -> tuple[bool, bool, list[str], dict]:
     return has_c2pa, has_ai or has_c2pa, findings, {"parts": len(parts)}
 
 
+def _scrub_docx_property_xml(name: str, raw: bytes, actions: list[str]) -> bytes:
+    text = raw.decode("utf-8", errors="replace")
+    new = text
+    field_patterns = (
+        (r"(<dc:creator[^>]*>)(.*?)(</dc:creator>)", "dc:creator"),
+        (r"(<cp:lastModifiedBy[^>]*>)(.*?)(</cp:lastModifiedBy>)", "cp:lastModifiedBy"),
+        (r"(<Application[^>]*>)(.*?)(</Application>)", "Application"),
+        (r"(<AppVersion[^>]*>)(.*?)(</AppVersion>)", "AppVersion"),
+        (r"(<(?:[A-Za-z_][\w.-]*:)?trainedAlgorithmicMedia\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?trainedAlgorithmicMedia>)", "trainedAlgorithmicMedia"),
+        (r"(<(?:[A-Za-z_][\w.-]*:)?AIGC\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?AIGC>)", "AIGC"),
+    )
+    for pat, label in field_patterns:
+        def _sub(match: re.Match[str], _label: str = label) -> str:
+            inner = match.group(2)
+            if AI_META_NAME_RE.search(inner) or AI_META_NAME_RE.search(_label):
+                actions.append(f"scrub {name} field {_label}")
+                if _label in ("trainedAlgorithmicMedia", "AIGC"):
+                    return ""
+                return match.group(1) + match.group(3)
+            if _label in ("Application", "AppVersion") and re.search(
+                r"claude|openai|anthropic|gemini|chatgpt|synthid|copilot",
+                inner,
+                re.I,
+            ):
+                actions.append(f"scrub {name} field {_label}")
+                return match.group(1) + match.group(3)
+            return match.group(0)
+
+        new = re.sub(pat, _sub, new, flags=re.I | re.DOTALL)
+    return new.encode("utf-8")
+
+
+def _drop_docx_content_type_overrides(text: str, dropped_parts: set[str]) -> tuple[str, int]:
+    dropped = 0
+
+    def _sub(match: re.Match[str]) -> str:
+        nonlocal dropped
+        part_name_match = re.search(r'PartName="/([^"]+)"', match.group(0), re.I)
+        if part_name_match and part_name_match.group(1) in dropped_parts:
+            dropped += 1
+            return ""
+        return match.group(0)
+
+    return re.sub(r"<Override\b[^>]*/>", _sub, text, flags=re.I | re.DOTALL), dropped
+
+
+def _drop_docx_relationships(text: str, dropped_parts: set[str], rels_path: str) -> tuple[str, int]:
+    rels_dir = "" if rels_path == "_rels/.rels" else rels_path.rsplit("/_rels/", 1)[0] + "/"
+    dropped = 0
+
+    def _target_part(target: str) -> str:
+        if target.startswith("/"):
+            return target.lstrip("/")
+        base_parts = rels_dir.rstrip("/").split("/") if rels_dir else []
+        target_parts = target.split("/")
+        while target_parts and target_parts[0] == "..":
+            target_parts.pop(0)
+            if base_parts:
+                base_parts.pop()
+        return "/".join([*base_parts, *target_parts])
+
+    def _sub(match: re.Match[str]) -> str:
+        nonlocal dropped
+        target_match = re.search(r'Target="([^"]+)"', match.group(0), re.I)
+        if target_match and _target_part(target_match.group(1)) in dropped_parts:
+            dropped += 1
+            return ""
+        return match.group(0)
+
+    return re.sub(r"<Relationship\b[^>]*/>", _sub, text, flags=re.I | re.DOTALL), dropped
+
+
 def clean_docx(data: bytes) -> tuple[bytes, list[str]]:
     actions: list[str] = []
     out_buf = io.BytesIO()
     budget = [0]
-    with zipfile.ZipFile(io.BytesIO(data)) as zin, zipfile.ZipFile(
-        out_buf, "w", compression=zipfile.ZIP_DEFLATED
-    ) as zout:
-        for info in zin.infolist():
+    dropped_parts: set[str] = set()
+    with zipfile.ZipFile(io.BytesIO(data)) as zin:
+        original_infos = zin.infolist()
+        for info in original_infos:
             name = info.filename
             _check_zip_budget(info, budget)
             raw = zin.read(name)
-            # Drop entire customXml trees (often provenance injects)
             if name.startswith("customXml/"):
-                # Drop customXml — often used for provenance injects; body stays in word/
-                actions.append(f"drop part {name}")
+                dropped_parts.add(name)
                 continue
-            if name in DOCX_META_PARTS or name.startswith("docProps/"):
-                text = raw.decode("utf-8", errors="replace")
-                # Scrub known AI generator fields via simple regex on XML text nodes
-                new = text
-                for pat, repl, label in (
-                    (
-                        r"(<dc:creator[^>]*>)(.*?)(</dc:creator>)",
-                        None,
-                        "dc:creator",
-                    ),
-                    (
-                        r"(<cp:lastModifiedBy[^>]*>)(.*?)(</cp:lastModifiedBy>)",
-                        None,
-                        "cp:lastModifiedBy",
-                    ),
-                    (
-                        r"(<Application[^>]*>)(.*?)(</Application>)",
-                        None,
-                        "Application",
-                    ),
-                    (
-                        r"(<AppVersion[^>]*>)(.*?)(</AppVersion>)",
-                        None,
-                        "AppVersion",
-                    ),
-                ):
-                    def _sub(m: re.Match[str], _label=label) -> str:
-                        inner = m.group(2)
-                        if AI_META_NAME_RE.search(inner) or AI_META_NAME_RE.search(_label):
-                            actions.append(f"scrub {name} field {_label}")
-                            return m.group(1) + m.group(3)
-                        # Always clear Application if it looks like AI
-                        if _label in ("Application", "AppVersion") and re.search(
-                            r"claude|openai|anthropic|gemini|chatgpt|synthid|copilot",
-                            inner,
-                            re.I,
-                        ):
-                            actions.append(f"scrub {name} field {_label}")
-                            return m.group(1) + m.group(3)
-                        return m.group(0)
+            if name.endswith("docProps/custom.xml") and (
+                _blob_hits(raw)[1] or AI_META_NAME_RE.search(raw.decode("utf-8", errors="replace"))
+            ):
+                dropped_parts.add(name)
 
-                    new = re.sub(pat, _sub, new, flags=re.I | re.DOTALL)
-                # Drop custom.xml entirely if AI-ish
-                if name.endswith("custom.xml") and (
-                    _blob_hits(raw)[1] or AI_META_NAME_RE.search(text)
-                ):
+        with zipfile.ZipFile(out_buf, "w", compression=zipfile.ZIP_DEFLATED) as zout:
+            for info in original_infos:
+                name = info.filename
+                raw = zin.read(name)
+                if name in dropped_parts:
                     actions.append(f"drop part {name}")
                     continue
-                raw = new.encode("utf-8")
-            # content types: leave as-is (removing overrides for dropped customXml is nice-to-have)
-            if name == "[Content_Types].xml":
-                text = raw.decode("utf-8", errors="replace")
-                new, n = re.subn(
-                    r'<Override\b[^>]*PartName="/customXml/[^"]*"[^>]*/>',
-                    "",
-                    text,
-                )
-                if n:
-                    actions.append(f"drop Content_Types customXml overrides x{n}")
-                    raw = new.encode("utf-8")
-            zout.writestr(info, raw)
+                if name in DOCX_META_PARTS or name.startswith("docProps/"):
+                    raw = _scrub_docx_property_xml(name, raw, actions)
+                if name == "[Content_Types].xml":
+                    text = raw.decode("utf-8", errors="replace")
+                    new, n = _drop_docx_content_type_overrides(text, dropped_parts)
+                    if n:
+                        actions.append(f"drop Content_Types overrides x{n}")
+                        raw = new.encode("utf-8")
+                if name in ("_rels/.rels", "word/_rels/document.xml.rels"):
+                    text = raw.decode("utf-8", errors="replace")
+                    new, n = _drop_docx_relationships(text, dropped_parts, name)
+                    if n:
+                        actions.append(f"drop relationships in {name} x{n}")
+                        raw = new.encode("utf-8")
+                zout.writestr(info, raw)
     if not actions:
         actions.append("no DOCX metadata parts removed")
     return out_buf.getvalue(), actions
