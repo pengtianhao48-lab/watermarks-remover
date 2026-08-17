@@ -195,6 +195,28 @@ _ZW_FAMILY: frozenset[int] = frozenset(
 
 _HTML_ENTITY_RE = re.compile(r"&(?:#\d+|#x[0-9a-f]+|[a-z][a-z0-9]+);", re.I)
 _HTML_TAG_RE = re.compile(r"<[A-Za-z!/][^>]*>")
+# Only treat input as an HTML *document* when it BEGINS with a structural
+# marker (optionally after leading whitespace / BOM / a leading comment).
+# This is the decisive discriminator between:
+#   * a real HTML document/page to be cleaned (starts with <!DOCTYPE html> or
+#     <html ...>), and
+#   * a plain-text / Markdown answer that merely *contains* angle-bracket
+#     fragments or even an embedded HTML code example (C headers <stdint.h>,
+#     TS generics ref<T>, a literal "<head>" in prose, or a fenced
+#     "<!DOCTYPE html> ... </html>" snippet inside a tutorial).
+# The latter must stay byte-for-byte identical ("dark watermark =
+# user-imperceptible, content unchanged"). Anchoring at the start prevents a
+# code sample buried in prose from hijacking the whole message into the HTML
+# text extractor.
+_HTML_DOCUMENT_RE = re.compile(
+    r"\A[\s\ufeff]*(?:<!--.*?-->\s*)*(?:<!DOCTYPE\s+html|<html[\s>])",
+    re.I | re.S,
+)
+
+
+def _looks_like_html_document(text: str) -> bool:
+    """Heuristic: is this a real HTML document (vs. plain text/code with <...>)?"""
+    return bool(_HTML_DOCUMENT_RE.search(text))
 _HIDDEN_STYLE_RE = re.compile(
     r"(?:display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0(?:px|pt|pc|em|rem|%|cm|mm|in)?)",
     re.I,
@@ -294,7 +316,15 @@ class _VisibleHTMLTextExtractor(HTMLParser):
 
 
 def _preclean_html_text(text: str) -> str:
+    # Only run the HTML text extractor when the input is confidently a real
+    # HTML *document*. Plain text and code snippets that merely contain
+    # angle-bracket fragments (<stdint.h>, ref<T>, literal "<script>", etc.)
+    # are returned untouched so their visible content stays byte-for-byte
+    # identical. Invisible-character cleaning still runs downstream in
+    # clean_text().
     if "<" not in text and "&" not in text:
+        return text
+    if not _looks_like_html_document(text):
         return text
     unescaped = html.unescape(text)
     if _HTML_TAG_RE.search(unescaped):

@@ -216,13 +216,38 @@ def test_inspect_private_use():
     assert any(h.kind == "private_use" for h in report.hits)
 
 
-def test_clean_decodes_html_entities_before_unicode_scrub():
+def test_clean_preserves_html_entities_in_plain_text():
+    # Plain text (no HTML document structure) must stay byte-for-byte identical.
+    # An entity like &#8203; that appears in prose/code is left untouched; only
+    # genuine invisible codepoints are scrubbed. This upholds the "dark
+    # watermark = user-imperceptible, content unchanged" principle.
     raw = "Plan&#8203; ahead before launch."
     cleaned, _ = clean_text(raw)
-    assert cleaned == "Plan ahead before launch."
+    assert cleaned == raw
 
 
-def test_clean_strips_hidden_html_elements():
-    raw = 'Visible<span style="display:none">hidden</span> note <span hidden>ghost</span><span style="font-size:0">skip</span>end.'
+def test_clean_preserves_angle_bracket_literals_in_plain_text():
+    # <...> fragments in plain text / code are NOT HTML tags and must survive.
+    for raw in (
+        "Include <stdint.h> and <stdbool.h> in your C code.",
+        "Use ref<T | null>(null) and Map<string, Promise<any>>().",
+        "Insert an inline <script> at the top of the <head>. Then reload.",
+        "Render <Button onClick={fn}>Go</Button> then <Modal open>.",
+    ):
+        cleaned, _ = clean_text(raw)
+        assert cleaned == raw
+
+
+def test_clean_strips_hidden_elements_in_real_html_document():
+    # Only a genuine HTML *document* (doctype / <html> / closing structural
+    # tags) is run through the visible-text extractor, dropping hidden
+    # watermark spans while keeping visible text.
+    raw = (
+        "<!DOCTYPE html><html><head></head><body>"
+        'Visible<span style="display:none">hidden</span> note '
+        "<span hidden>ghost</span>"
+        '<span style="font-size:0">skip</span>end.'
+        "</body></html>"
+    )
     cleaned, _ = clean_text(raw)
     assert cleaned == "Visible note end."
