@@ -29,7 +29,7 @@ OUTPUT_RETENTION_SECONDS = 10 * 60
 OUTPUTS = Path(tempfile.gettempdir()) / "watermarks-remover-outputs"
 SITE_URL = "https://watermarks-remover-production.up.railway.app"
 BRAND_NAME = "AI Watermarks Remover"
-ASSET_VERSION = "20260817-2210"
+ASSET_VERSION = "20260817-2340"
 HTML_HEADERS = {
     "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
     "Pragma": "no-cache",

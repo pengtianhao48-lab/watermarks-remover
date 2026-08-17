@@ -14,7 +14,6 @@ RUN apt-get update \
     && python -m spacy download es_core_news_sm \
     && python -m spacy download fr_core_news_sm \
     && python -m spacy download de_core_news_sm \
-    && python -m spacy download ja_core_news_sm \
     && python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 
 COPY . .
