@@ -29,7 +29,7 @@ OUTPUT_RETENTION_SECONDS = 10 * 60
 OUTPUTS = Path(tempfile.gettempdir()) / "watermarks-remover-outputs"
 SITE_URL = "https://watermarks-remover-production.up.railway.app"
 BRAND_NAME = "AI Watermarks Remover"
-ASSET_VERSION = "20260817-1905"
+ASSET_VERSION = "20260817-2210"
 HTML_HEADERS = {
     "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
     "Pragma": "no-cache",
@@ -44,38 +44,84 @@ LOCALES = {
     "hi": ("वॉटरमार्क रिमूवर", "अपनी फ़ाइलों से AI वॉटरमार्क, C2PA मेटाडेटा, EXIF/XMP निशान, अदृश्य Unicode और दस्तावेज़ स्रोत हटाएँ।"),
     "ar": ("مزيل العلامات المائية", "أزل علامات الذكاء الاصطناعي وبيانات C2PA وEXIF/XMP وآثار Unicode غير المرئية من ملفاتك."),
     "fr": ("Suppresseur de filigranes", "Supprimez les filigranes IA, métadonnées C2PA, traces EXIF/XMP, Unicode invisible et provenance documentaire."),
-    "pt": ("Removedor de marcas d'água", "Remova marcas d'água de IA, metadados C2PA, rastros EXIF/XMP, Unicode invisível e proveniência de documentos."),
     "de": ("Wasserzeichen-Entferner", "Entfernen Sie KI-Wasserzeichen, C2PA-Metadaten, EXIF/XMP-Spuren, unsichtbares Unicode und Dokumentherkunft."),
     "ja": ("ウォーターマークリムーバー", "所有ファイルから AI 透かし、C2PA メタデータ、EXIF/XMP 痕跡、不可視 Unicode、文書来歴を削除します。"),
     "ko": ("워터마크 제거기", "소유한 파일에서 AI 워터마크, C2PA 메타데이터, EXIF/XMP 흔적, 보이지 않는 Unicode, 문서 출처 정보를 제거합니다."),
-    "ru": ("Удаление водяных знаков", "Удаляйте AI-водяные знаки, метаданные C2PA, следы EXIF/XMP, невидимый Unicode и происхождение документов."),
-    "id": ("Penghapus watermark", "Hapus watermark AI, metadata C2PA, jejak EXIF/XMP, Unicode tak terlihat, dan asal dokumen dari file Anda."),
-    "tr": ("Filigran kaldırıcı", "Sahip olduğunuz dosyalardan AI filigranlarını, C2PA meta verilerini, EXIF/XMP izlerini ve görünmez Unicode işaretlerini kaldırın."),
-    "vi": ("Công cụ xóa watermark", "Xóa watermark AI, metadata C2PA, dấu vết EXIF/XMP, Unicode ẩn và nguồn gốc tài liệu khỏi tệp của bạn."),
-    "th": ("ตัวลบลายน้ำ", "ลบลายน้ำ AI, เมตาดาต้า C2PA, ร่องรอย EXIF/XMP, Unicode ที่มองไม่เห็น และที่มาของเอกสารจากไฟล์ของคุณ"),
-    "it": ("Rimozione watermark", "Rimuovi watermark AI, metadati C2PA, tracce EXIF/XMP, Unicode invisibile e provenienza dei documenti."),
-    "nl": ("Watermerk verwijderaar", "Verwijder AI-watermerken, C2PA-metadata, EXIF/XMP-sporen, onzichtbare Unicode en documentherkomst."),
-    "pl": ("Usuwanie znaków wodnych", "Usuń znaki wodne AI, metadane C2PA, ślady EXIF/XMP, niewidoczny Unicode i pochodzenie dokumentów."),
-    "uk": ("Видалення водяних знаків", "Видаляйте AI-водяні знаки, метадані C2PA, сліди EXIF/XMP, невидимий Unicode та походження документів."),
-    "ms": ("Pembuang watermark", "Buang watermark AI, metadata C2PA, jejak EXIF/XMP, Unicode tersembunyi dan provenance dokumen daripada fail anda."),
-    "fa": ("حذف واترمارک", "واترمارک‌های هوش مصنوعی، فراداده C2PA، ردپاهای EXIF/XMP، Unicode نامرئی و منشأ سند را حذف کنید."),
-    "ur": ("واٹرمارک ریموور", "اپنی فائلوں سے AI واٹرمارک، C2PA میٹا ڈیٹا، EXIF/XMP نشانات، پوشیدہ Unicode اور دستاویزی ماخذ ہٹائیں۔"),
-    "bn": ("ওয়াটারমার্ক রিমুভার", "আপনার ফাইল থেকে AI ওয়াটারমার্ক, C2PA মেটাডেটা, EXIF/XMP চিহ্ন, অদৃশ্য Unicode ও ডকুমেন্ট উৎস মুছুন।"),
-    "ta": ("வாட்டர்மார்க் நீக்கி", "உங்கள் கோப்புகளில் இருந்து AI watermark, C2PA metadata, EXIF/XMP தடங்கள், மறை Unicode மற்றும் ஆவண provenance ஐ நீக்கவும்."),
-    "te": ("వాటర్‌మార్క్ రిమూవర్", "మీ ఫైళ్లలోని AI watermark, C2PA metadata, EXIF/XMP traces, invisible Unicode మరియు document provenance తొలగించండి."),
-    "mr": ("वॉटरमार्क रिमूव्हर", "तुमच्या फाइलमधील AI watermark, C2PA metadata, EXIF/XMP traces, अदृश्य Unicode आणि document provenance काढा."),
-    "sw": ("Kiondoa watermark", "Ondoa watermark za AI, metadata ya C2PA, alama za EXIF/XMP, Unicode isiyoonekana na chanzo cha hati."),
-    "he": ("מסיר סימני מים", "הסירו סימני מים של AI, מטא-דאטה C2PA, עקבות EXIF/XMP, Unicode בלתי נראה ומקור מסמך."),
-    "el": ("Αφαίρεση υδατογραφημάτων", "Αφαιρέστε υδατογραφήματα AI, μεταδεδομένα C2PA, ίχνη EXIF/XMP, αόρατο Unicode και προέλευση εγγράφων."),
-    "cs": ("Odstraňovač vodoznaků", "Odstraňte AI vodoznaky, metadata C2PA, stopy EXIF/XMP, neviditelný Unicode a původ dokumentů."),
-    "ro": ("Eliminator watermark", "Eliminați watermark-uri AI, metadate C2PA, urme EXIF/XMP, Unicode invizibil și proveniența documentelor."),
-    "hu": ("Vízjel eltávolító", "Távolítsa el az AI-vízjeleket, C2PA-metaadatokat, EXIF/XMP-nyomokat, láthatatlan Unicode-ot és dokumentumeredetet."),
-    "sv": ("Vattenmärkesborttagare", "Ta bort AI-vattenmärken, C2PA-metadata, EXIF/XMP-spår, osynlig Unicode och dokumentursprung."),
-    "da": ("Vandmærkefjerner", "Fjern AI-vandmærker, C2PA-metadata, EXIF/XMP-spor, usynlig Unicode og dokumentoprindelse."),
-    "fi": ("Vesileiman poistaja", "Poista AI-vesileimat, C2PA-metatiedot, EXIF/XMP-jäljet, näkymätön Unicode ja asiakirjan alkuperä."),
-    "no": ("Vannmerkefjerner", "Fjern AI-vannmerker, C2PA-metadata, EXIF/XMP-spor, usynlig Unicode og dokumentopprinnelse."),
 }
-RTL_LOCALES = {"ar", "fa", "ur", "he"}
+RTL_LOCALES = {"ar"}
+
+BRAND_LOCAL_NAMES = {
+    "en": "AI Watermarks Remover",
+    "zh": "AI 水印移除",
+    "es": "AI Watermarks Remover",
+    "hi": "AI Watermarks Remover",
+    "ar": "AI Watermarks Remover",
+    "fr": "AI Watermarks Remover",
+    "de": "AI Watermarks Remover",
+    "ja": "AI Watermarks Remover",
+    "ko": "AI Watermarks Remover",
+}
+
+# Brand-first titles per locale. All start with the localized brand name.
+SITE_TITLES = {
+    "en": "AI Watermarks Remover — Remove Claude Watermarks, C2PA & Metadata",
+    "zh": "AI 水印移除 — 清除 Claude 电子水印、C2PA 与元数据",
+    "hi": "AI Watermarks Remover — Claude वॉटरमार्क, C2PA और मेटाडेटा हटाएँ",
+    "es": "AI Watermarks Remover — Elimina marcas de Claude, C2PA y metadatos",
+    "fr": "AI Watermarks Remover — Supprimer filigranes Claude, C2PA et métadonnées",
+    "ar": "AI Watermarks Remover — إزالة علامات Claude المائية وC2PA والبيانات الوصفية",
+    "de": "AI Watermarks Remover — Claude-Wasserzeichen, C2PA und Metadaten entfernen",
+    "ja": "AI Watermarks Remover — Claude 透かし、C2PA、メタデータを削除",
+    "ko": "AI Watermarks Remover — Claude 워터마크, C2PA, 메타데이터 제거",
+}
+
+HOWTO_STEPS = {
+    "en": [
+        ("Upload or paste content", "Choose a file (text, image, PDF, DOCX, ODT) up to 32 MB or paste text into the box."),
+        ("Scan for watermarks and metadata traces", "The tool inspects your content for visible watermarks, hidden Unicode, C2PA credentials, EXIF/XMP metadata and document traces."),
+        ("Clean supported traces and download", "Remove the traces we support and download the cleaned file — everything is deleted from our server within 10 minutes."),
+    ],
+    "zh": [
+        ("上传或粘贴内容", "选择一个不超过 32 MB 的文件（文本、图片、PDF、DOCX、ODT），或直接把文本粘贴到输入框。"),
+        ("扫描水印", "工具会检查内容里的可见水印、隐藏 Unicode、C2PA 凭证、EXIF/XMP 元数据和文档痕迹。"),
+        ("下载清理后的文件", "清理支持的痕迹并下载已清理的文件；服务器端会在 10 分钟内自动删除。"),
+    ],
+    "hi": [
+        ("सामग्री अपलोड करें या पेस्ट करें", "32 MB तक की फ़ाइल (टेक्स्ट, इमेज, PDF, DOCX, ODT) चुनें या टेक्स्ट पेस्ट करें।"),
+        ("वॉटरमार्क और मेटाडेटा निशान स्कैन करें", "टूल visible watermarks, hidden Unicode, C2PA credentials, EXIF/XMP metadata और document traces की जाँच करता है।"),
+        ("साफ़ फ़ाइल डाउनलोड करें", "समर्थित निशान हटाकर साफ़ फ़ाइल डाउनलोड करें — 10 मिनट के भीतर सर्वर से हट जाती है।"),
+    ],
+    "es": [
+        ("Sube o pega el contenido", "Elige un archivo (texto, imagen, PDF, DOCX, ODT) de hasta 32 MB o pega el texto."),
+        ("Escanea marcas de agua y metadatos", "La herramienta revisa marcas visibles, Unicode oculto, credenciales C2PA, EXIF/XMP y rastros del documento."),
+        ("Descarga el archivo limpio", "Elimina los rastros compatibles y descarga el archivo limpio; se borra del servidor en 10 minutos."),
+    ],
+    "fr": [
+        ("Importer ou coller le contenu", "Choisissez un fichier (texte, image, PDF, DOCX, ODT) jusqu’à 32 Mo ou collez du texte."),
+        ("Analyser filigranes et métadonnées", "L’outil vérifie les filigranes visibles, l’Unicode caché, les identifiants C2PA, les métadonnées EXIF/XMP et les traces documentaires."),
+        ("Télécharger le fichier nettoyé", "Supprimez les traces prises en charge et téléchargez le fichier nettoyé ; supprimé du serveur en 10 minutes."),
+    ],
+    "de": [
+        ("Inhalt hochladen oder einfügen", "Wählen Sie eine Datei (Text, Bild, PDF, DOCX, ODT) bis 32 MB oder fügen Sie Text ein."),
+        ("Wasserzeichen und Metadaten prüfen", "Das Tool prüft sichtbare Wasserzeichen, verstecktes Unicode, C2PA-Credentials, EXIF/XMP-Metadaten und Dokumentspuren."),
+        ("Bereinigte Datei herunterladen", "Unterstützte Spuren werden entfernt; die Datei wird innerhalb von 10 Minuten vom Server gelöscht."),
+    ],
+    "ar": [
+        ("ارفع أو الصق المحتوى", "اختر ملفاً (نص، صورة، PDF، DOCX، ODT) بحجم أقصاه 32 م.ب أو الصق النص."),
+        ("افحص العلامات والبيانات الوصفية", "تفحص الأداة العلامات المرئية، وUnicode المخفي، وشهادات C2PA، وبيانات EXIF/XMP، وآثار المستندات."),
+        ("نزّل الملف النظيف", "أزل الآثار المدعومة ونزّل الملف النظيف؛ يُحذف من الخادم خلال 10 دقائق."),
+    ],
+    "ja": [
+        ("ファイルをアップロードまたはテキストを貼り付け", "テキスト、画像、PDF、DOCX、ODT（最大 32 MB）を選ぶか、テキストを貼り付けます。"),
+        ("透かしとメタデータの痕跡をスキャン", "可視透かし、不可視 Unicode、C2PA、EXIF/XMP メタデータ、文書痕跡を検査します。"),
+        ("削除済みファイルをダウンロード", "対応する痕跡を削除し、削除後のファイルを保存できます。サーバー上のファイルは 10 分以内に削除されます。"),
+    ],
+    "ko": [
+        ("파일을 업로드하거나 텍스트를 붙여넣기", "텍스트, 이미지, PDF, DOCX, ODT(최대 32MB) 파일을 선택하거나 텍스트를 붙여넣습니다."),
+        ("워터마크와 메타데이터 흔적 검사", "보이는 워터마크, 숨은 Unicode, C2PA, EXIF/XMP 메타데이터, 문서 흔적을 검사합니다."),
+        ("정리된 파일 다운로드", "지원되는 흔적을 제거하고 정리된 파일을 다운로드합니다. 서버의 파일은 10분 이내 삭제됩니다."),
+    ],
+}
 
 SEO_SUFFIXES = {
     "en": "Claude Watermark Remover, C2PA & Metadata Cleaner",
@@ -332,7 +378,7 @@ async def _save_upload(file: UploadFile) -> Path:
 def _render_page(locale: str) -> HTMLResponse:
     base_title, base_description = LOCALES[locale]
     suffix = SEO_SUFFIXES.get(locale, SEO_SUFFIXES["en"])
-    title = f"{base_title} | {suffix}"
+    title = SITE_TITLES.get(locale, f"{BRAND_NAME} — {suffix}")
     description = SEO_DESCRIPTIONS.get(locale, base_description)
     keywords = SEO_KEYWORDS.get(locale, SEO_KEYWORDS["en"])
     seo_heading, seo_body = SEO_COPY.get(locale, (base_title, description))
@@ -378,12 +424,13 @@ def _render_page(locale: str) -> HTMLResponse:
 
 
 def _schema_json(locale: str, title: str, description: str, canonical_url: str, keywords: str, points: list[str], faqs: list[tuple[str, str]]) -> str:
+    steps = HOWTO_STEPS.get(locale, HOWTO_STEPS["en"])
     graph: list[dict[str, Any]] = [
         {
             "@type": "WebApplication",
             "@id": f"{canonical_url}#app",
             "name": BRAND_NAME,
-            "alternateName": LOCALES[locale][0],
+            "alternateName": BRAND_LOCAL_NAMES.get(locale, LOCALES[locale][0]),
             "url": canonical_url,
             "description": description,
             "inLanguage": locale,
@@ -401,9 +448,13 @@ def _schema_json(locale: str, title: str, description: str, canonical_url: str, 
             "description": description,
             "inLanguage": locale,
             "step": [
-                {"@type": "HowToStep", "position": 1, "name": "Upload or paste content"},
-                {"@type": "HowToStep", "position": 2, "name": "Scan for watermarks and metadata traces"},
-                {"@type": "HowToStep", "position": 3, "name": "Clean supported traces and download"},
+                {
+                    "@type": "HowToStep",
+                    "position": index + 1,
+                    "name": name,
+                    "text": text,
+                }
+                for index, (name, text) in enumerate(steps)
             ],
         },
     ]

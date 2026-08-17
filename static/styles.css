@@ -173,13 +173,18 @@ h2 { margin: 0; font-size: 25px; line-height: 1.05; letter-spacing: -.04em; }
 .steps li.done::before { content: "✓"; background: var(--ok); color: white; }
 .steps li.active { color: #7c2d12; background: #fff7ed; }
 .steps li.active::before { background: var(--warn); color: white; }
-.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.summary-grid { display: none; }
 .summary-grid div { padding: 12px; border-radius: 16px; background: #f8fafc; border: 1px solid var(--line); }
 .summary-grid span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; }
 .summary-grid strong { display: block; margin-top: 4px; font-size: 26px; letter-spacing: -.04em; }
 .clear-list { overflow: auto; max-height: 335px; padding-right: 2px; }
 .clear-list p { margin: 0; color: var(--muted); line-height: 1.55; }
 .clear-list ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.report-section { margin-top: 14px; }
+.report-section:first-child { margin-top: 0; }
+.report-section-title { margin: 0 0 8px; font-size: 13px; font-weight: 800; color: var(--muted); letter-spacing: -.01em; text-transform: uppercase; }
+.report-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.report-list li { padding: 10px 12px; border-radius: 14px; background: #f8fafc; border: 1px solid var(--line); color: #334155; font-weight: 600; font-size: 13px; line-height: 1.45; }
 .ready-traces { margin-top: 10px !important; }
 .ready-traces li { display: grid; gap: 2px; }
 .ready-traces span { color: var(--muted); font-size: 12px; font-weight: 800; }
@@ -277,7 +282,7 @@ h2 { margin: 0; font-size: 25px; line-height: 1.05; letter-spacing: -.04em; }
   .result-card .result-top { display: flex; align-items: center; justify-content: space-between; }
   .result-card h2 { font-size: 20px; }
   .download { min-height: 42px; border-radius: 13px; padding: 0 14px; font-size: 14px; }
-  .result-card.expanded .summary-grid { display: grid; gap: 7px; }
+  .result-card.expanded .summary-grid { display: none; }
   .result-card.expanded .clear-list { max-height: 120px; }
   .steps li { padding: 6px 8px; font-size: 12px; border-radius: 12px; }
   .steps li::before { width: 20px; height: 20px; font-size: 11px; }

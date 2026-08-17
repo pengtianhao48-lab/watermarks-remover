@@ -1,5 +1,5 @@
 const localeNames = {
-  en: 'English', zh: '中文', es: 'Español', hi: 'हिन्दी', ar: 'العربية', fr: 'Français', pt: 'Português', de: 'Deutsch', ja: '日本語', ko: '한국어', ru: 'Русский', id: 'Indonesia', tr: 'Türkçe', vi: 'Tiếng Việt', th: 'ไทย', it: 'Italiano', nl: 'Nederlands', pl: 'Polski', uk: 'Українська', ms: 'Melayu', fa: 'فارسی', ur: 'اردو', bn: 'বাংলা', ta: 'தமிழ்', te: 'తెలుగు', mr: 'मराठी', sw: 'Kiswahili', he: 'עברית', el: 'Ελληνικά', cs: 'Čeština', ro: 'Română', hu: 'Magyar', sv: 'Svenska', da: 'Dansk', fi: 'Suomi', no: 'Norsk'
+  en: 'English', zh: '中文', es: 'Español', hi: 'हिन्दी', ar: 'العربية', fr: 'Français', de: 'Deutsch', ja: '日本語', ko: '한국어'
 };
 
 const supportedLocales = Object.keys(localeNames);
@@ -15,10 +15,10 @@ if (!pathLocale && preferredLocale !== 'en') {
 
 const copy = {
   en: {
-    language: 'Language', eyebrow: 'Open. Clean. Download.', brandTitle: 'AI Watermarks Remover', headline: 'Remove watermarks and hidden traces now.', subtitle: 'Removes visible and hidden AI watermarks from Claude, ChatGPT/OpenAI, Gemini and more: text marks, C2PA, EXIF/XMP, invisible Unicode, and document metadata.', targetUnicode: 'Hidden Unicode', targetMetadata: 'Metadata', targetDocs: 'Document traces', fileTab: 'File', textTab: 'Text', chooseFile: 'Choose file', fileHint: 'txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB', autoDetect: 'Auto detect file type', asText: 'Text', asImage: 'Image', asDocument: 'Document', nfkc: 'Normalize text', deepClean: 'Deep text clean', keepMetadata: 'Keep safe image metadata', nfkcTip: 'Makes text use standard characters and spacing. Useful when copy/paste looks normal but behaves strangely.', deepCleanTip: 'Removes look-alike letters and hidden text tricks more aggressively. Use if a file still looks suspicious.', keepMetadataTip: 'Keeps ordinary camera/app info when it is not related to AI provenance. Turn off to strip more image metadata.', inspect: 'Check first', cleanDownload: 'Clean watermark', textPlaceholder: 'Paste text here. Invisible Unicode and suspicious spacing will be cleaned instantly.', cleanText: 'Clean text', copyResult: 'Copy result', resultLabel: 'Result', readyTitle: 'Ready to clean', download: 'Download file', stepUpload: 'Upload or paste content', stepScan: 'Scan for watermarks and traces', stepClean: 'Clean supported traces', removedCount: 'Removed', traceTypes: 'Trace types', readyMessage: 'Choose a file or paste text. You will see exactly what was found and removed.', seoTitle: 'Fast watermark and metadata removal for urgent use', seoBody: 'Works in the browser on desktop and mobile. Supports common text, image, web, and document files, with a clear after-action report for AI marks, C2PA, EXIF/XMP, invisible characters, and document metadata.', inspecting: 'Checking file…', cleaning: 'Cleaning file…', cleaningText: 'Cleaning text…', doneTitle: 'Cleaned', checkedTitle: 'Check complete', nothingFound: 'No supported traces were found.', cleanedTextReady: 'Text cleaned and placed back in the box.', copied: 'Copied', downloadReady: 'Cleaned file is ready.', errorTitle: 'Could not process', rawReport: 'Technical report', found: 'Found', cleaned: 'Cleaned', risk: 'Note', fileSelected: 'Selected', cleaningTitle: 'Cleaning…', expiresNotice: 'Download soon: cleaned files are deleted after 10 minutes.', synthidLabel: 'Claude watermark check:', synthidSuffix: 'suspected hidden-watermark likelihood', synthidTooltip: `❓ What is a Claude watermark?\nSome AI systems can leave subtle statistical patterns in word choice.\nThey are invisible to the eye and simple copy/paste usually does not remove them.\nThis score estimates how much the current text still looks like it carries that kind of pattern.\nIt is probabilistic, not a 100% guarantee.`, neutralizeSynthid: '🔶 Remove Claude statistical watermark (this will change wording, use carefully)', neutralizeSynthidTip: `❓ How removal works and what to watch for\n\n[What it is]\nClaude-style watermarking can leave statistical fingerprints in word choice and token boundaries.\nNormal copy/paste usually does not remove them.\n\n[How we reduce it]\n1. We replace part of the ordinary spaces with legal look-alike Unicode spaces\n2. We use spaCy + WordNet to swap some verbs and adjectives with close synonyms\n\n[Important]\n⚠️ Wording may change slightly while meaning stays the same\n⚠️ Removal is probabilistic and cannot guarantee 100% success\n⚠️ Only use this when you accept light wording changes`, textFileModeNotice: 'Text file cleaned and prepared for download.'
+    language: 'Language', eyebrow: 'Open. Clean. Download.', brandTitle: 'AI Watermarks Remover', headline: 'Remove watermarks and hidden traces now.', subtitle: 'Removes visible and hidden AI watermarks from Claude, ChatGPT/OpenAI, Gemini and more: text marks, C2PA, EXIF/XMP, invisible Unicode, and document metadata.', targetUnicode: 'Hidden Unicode', targetMetadata: 'Metadata', targetDocs: 'Document traces', fileTab: 'File', textTab: 'Text', chooseFile: 'Choose file', fileHint: 'txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB', autoDetect: 'Auto detect file type', asText: 'Text', asImage: 'Image', asDocument: 'Document', nfkc: 'Normalize text', deepClean: 'Deep text clean', keepMetadata: 'Keep safe image metadata', nfkcTip: 'Makes text use standard characters and spacing. Useful when copy/paste looks normal but behaves strangely.', deepCleanTip: 'Removes look-alike letters and hidden text tricks more aggressively. Use if a file still looks suspicious.', keepMetadataTip: 'Keeps ordinary camera/app info when it is not related to AI provenance. Turn off to strip more image metadata.', inspect: 'Check first', cleanDownload: 'Clean watermark', textPlaceholder: 'Paste text here. Invisible Unicode and suspicious spacing will be cleaned instantly.', cleanText: 'Clean text', copyResult: 'Copy result', resultLabel: 'Result', readyTitle: 'Ready to clean', download: 'Download file', stepUpload: 'Upload or paste content', stepScan: 'Scan for watermarks and traces', stepClean: 'Clean supported traces', removedCount: 'Removed', traceTypes: 'Trace types', readyMessage: 'Choose a file or paste text. You will see exactly what was found and removed.', seoTitle: 'Fast watermark and metadata removal for urgent use', seoBody: 'Works in the browser on desktop and mobile. Supports common text, image, web, and document files, with a clear after-action report for AI marks, C2PA, EXIF/XMP, invisible characters, and document metadata.', inspecting: 'Checking file…', cleaning: 'Cleaning file…', cleaningText: 'Cleaning text…', doneTitle: 'Cleaned', checkedTitle: 'Check complete', nothingFound: 'No supported traces were found.', cleanedTextReady: 'Text cleaned and placed back in the box.', copied: 'Copied', downloadReady: 'Cleaned file is ready.', errorTitle: 'Could not process', rawReport: 'Technical report', found: 'Found', cleaned: 'Cleaned', risk: 'Note', fileSelected: 'Selected', cleaningTitle: 'Cleaning…', expiresNotice: 'This file will be automatically deleted in 10 minutes.', synthidLabel: 'Claude watermark check:', synthidSuffix: 'suspected hidden-watermark likelihood', synthidTooltip: `❓ What is a Claude watermark?\nSome AI systems can leave subtle statistical patterns in word choice.\nThey are invisible to the eye and simple copy/paste usually does not remove them.\nThis score estimates how much the current text still looks like it carries that kind of pattern.\nIt is probabilistic, not a 100% guarantee.`, neutralizeSynthid: '🔶 Remove Claude statistical watermark (this will change wording, use carefully)', neutralizeSynthidTip: `❓ How removal works and what to watch for\n\n[What it is]\nClaude-style watermarking can leave statistical fingerprints in word choice and token boundaries.\nNormal copy/paste usually does not remove them.\n\n[How we reduce it]\n1. We replace part of the ordinary spaces with legal look-alike Unicode spaces\n2. We use spaCy + WordNet to swap some verbs and adjectives with close synonyms\n\n[Important]\n⚠️ Wording may change slightly while meaning stays the same\n⚠️ Removal is probabilistic and cannot guarantee 100% success\n⚠️ Only use this when you accept light wording changes`, textFileModeNotice: 'Text file cleaned and prepared for download.'
   },
   zh: {
-    language: '语言', eyebrow: '打开 · 清理 · 下载', brandTitle: 'AI 水印移除', headline: '立即清除水印和隐藏痕迹。', subtitle: '支持 Claude、ChatGPT/OpenAI、Gemini 等常见 AI 明水印与电子水印：文字标记、C2PA、EXIF/XMP、隐藏 Unicode 和文档元数据。', targetUnicode: '隐藏 Unicode', targetMetadata: '元数据', targetDocs: '文档痕迹', fileTab: '文件', textTab: '文本', chooseFile: '选择文件', fileHint: 'txt、md、html、png、jpg、svg、pdf、docx、odt · 最大 32 MB', autoDetect: '自动识别文件类型', asText: '文本', asImage: '图片', asDocument: '文档', nfkc: '规范化文本', deepClean: '深度文本清理', keepMetadata: '保留安全图片元数据', nfkcTip: '把文字和空格转成标准形式，解决看着正常但复制异常的问题。', deepCleanTip: '更强力处理相似字母和隐藏字符；文件仍可疑时再打开。', keepMetadataTip: '保留普通相机/软件信息；关闭后会更彻底移除图片元数据。', inspect: '先检查', cleanDownload: '清除水印', textPlaceholder: '把文本粘贴到这里。隐藏 Unicode 和异常空格会被立即清理。', cleanText: '清理文本', copyResult: '复制结果', resultLabel: '结果', readyTitle: '准备清理', download: '下载文件', stepUpload: '上传或粘贴内容', stepScan: '扫描水印和电子痕迹', stepClean: '清理支持的痕迹', removedCount: '已清除', traceTypes: '痕迹类型', readyMessage: '选择文件或粘贴文本后，这里会清楚告诉你发现并处理了什么。', seoTitle: '面向着急使用场景的快速水印与元数据清除', seoBody: '桌面和手机浏览器都可用。支持常见文本、图片、网页和文档文件，并提供清晰的处理报告：AI 标记、C2PA、EXIF/XMP、隐藏字符和文档元数据。', inspecting: '正在检查文件…', cleaning: '正在清理文件…', cleaningText: '正在清理文本…', doneTitle: '已清理完成', checkedTitle: '检查完成', nothingFound: '未发现当前支持清理的痕迹。', cleanedTextReady: '文本已清理，并放回输入框。', copied: '已复制', downloadReady: '清理后的文件已准备好。', errorTitle: '处理失败', rawReport: '技术报告', found: '发现', cleaned: '已清理', risk: '提示', fileSelected: '已选择', cleaningTitle: '正在清理…', expiresNotice: '请及时下载：清理后的文件会在 10 分钟后删除。', synthidLabel: 'Claude 电子水印检测：', synthidSuffix: '疑似含水印', synthidTooltip: `❓ 什么是 Claude 电子水印？\nClaude 等 AI 在生成文字时，会悄悄调整用词的统计规律，\n形成一种肉眼看不见、复制粘贴也无法去除的“统计型水印”。\n这个分数代表我们检测到这段文字“像是带有这类水印”的可能性。\n注意：这是概率判断，不是 100% 准确，仅供参考。`, neutralizeSynthid: '🔶 清除 Claude 电子水印（将会修改文字内容，请谨慎使用）', neutralizeSynthidTip: `❓ 清除原理与风险说明\n\n【什么是 Claude 电子水印】\nClaude 生成文字时会在词语选择上留下统计规律，\n形成肉眼不可见的“数字指纹”。普通复制粘贴无法去除。\n\n【我们如何清除】\n1. 用合法的不同宽度空白符替换普通空格，打乱 AI 水印的 Token 边界\n2. 智能识别文中的动词和形容词，用同义词进行局部替换\n\n【重要提示】\n⚠️ 这会对文字措辞造成轻微改动（语义不变，但个别用词会有差异）\n⚠️ 清除效果是概率性的，不保证 100% 消除\n⚠️ 请在确认可以接受文字被修改后再勾选此选项`, textFileModeNotice: '文本文件已清理并可直接下载。'
+    language: '语言', eyebrow: '打开 · 清理 · 下载', brandTitle: 'AI 水印移除', headline: '立即清除水印和隐藏痕迹。', subtitle: '支持 Claude、ChatGPT/OpenAI、Gemini 等常见 AI 明水印与电子水印：文字标记、C2PA、EXIF/XMP、隐藏 Unicode 和文档元数据。', targetUnicode: '隐藏 Unicode', targetMetadata: '元数据', targetDocs: '文档痕迹', fileTab: '文件', textTab: '文本', chooseFile: '选择文件', fileHint: 'txt、md、html、png、jpg、svg、pdf、docx、odt · 最大 32 MB', autoDetect: '自动识别文件类型', asText: '文本', asImage: '图片', asDocument: '文档', nfkc: '规范化文本', deepClean: '深度文本清理', keepMetadata: '保留安全图片元数据', nfkcTip: '把文字和空格转成标准形式，解决看着正常但复制异常的问题。', deepCleanTip: '更强力处理相似字母和隐藏字符；文件仍可疑时再打开。', keepMetadataTip: '保留普通相机/软件信息；关闭后会更彻底移除图片元数据。', inspect: '先检查', cleanDownload: '清除水印', textPlaceholder: '把文本粘贴到这里。隐藏 Unicode 和异常空格会被立即清理。', cleanText: '清理文本', copyResult: '复制结果', resultLabel: '结果', readyTitle: '准备清理', download: '下载文件', stepUpload: '上传或粘贴内容', stepScan: '扫描水印和电子痕迹', stepClean: '清理支持的痕迹', removedCount: '已清除', traceTypes: '痕迹类型', readyMessage: '选择文件或粘贴文本后，这里会清楚告诉你发现并处理了什么。', seoTitle: '面向着急使用场景的快速水印与元数据清除', seoBody: '桌面和手机浏览器都可用。支持常见文本、图片、网页和文档文件，并提供清晰的处理报告：AI 标记、C2PA、EXIF/XMP、隐藏字符和文档元数据。', inspecting: '正在检查文件…', cleaning: '正在清理文件…', cleaningText: '正在清理文本…', doneTitle: '已清理完成', checkedTitle: '检查完成', nothingFound: '未发现当前支持清理的痕迹。', cleanedTextReady: '文本已清理，并放回输入框。', copied: '已复制', downloadReady: '清理后的文件已准备好。', errorTitle: '处理失败', rawReport: '技术报告', found: '发现', cleaned: '已清理', risk: '提示', fileSelected: '已选择', cleaningTitle: '正在清理…', expiresNotice: '文件将在 10 分钟后自动删除。', synthidLabel: 'Claude 电子水印检测：', synthidSuffix: '疑似含水印', synthidTooltip: `❓ 什么是 Claude 电子水印？\nClaude 等 AI 在生成文字时，会悄悄调整用词的统计规律，\n形成一种肉眼看不见、复制粘贴也无法去除的“统计型水印”。\n这个分数代表我们检测到这段文字“像是带有这类水印”的可能性。\n注意：这是概率判断，不是 100% 准确，仅供参考。`, neutralizeSynthid: '🔶 清除 Claude 电子水印（将会修改文字内容，请谨慎使用）', neutralizeSynthidTip: `❓ 清除原理与风险说明\n\n【什么是 Claude 电子水印】\nClaude 生成文字时会在词语选择上留下统计规律，\n形成肉眼不可见的“数字指纹”。普通复制粘贴无法去除。\n\n【我们如何清除】\n1. 用合法的不同宽度空白符替换普通空格，打乱 AI 水印的 Token 边界\n2. 智能识别文中的动词和形容词，用同义词进行局部替换\n\n【重要提示】\n⚠️ 这会对文字措辞造成轻微改动（语义不变，但个别用词会有差异）\n⚠️ 清除效果是概率性的，不保证 100% 消除\n⚠️ 请在确认可以接受文字被修改后再勾选此选项`, textFileModeNotice: '文本文件已清理并可直接下载。'
   },
   es: { brandTitle: 'Eliminador de marcas de agua IA', headline: 'Elimina marcas de agua y rastros ocultos ahora.', subtitle: 'Para marcas visibles y electrónicas de Claude, ChatGPT/OpenAI, Gemini y más: C2PA, EXIF/XMP, Unicode invisible y metadatos.', chooseFile: 'Elegir archivo', cleanDownload: 'Limpiar y descargar', cleanText: 'Limpiar texto', resultLabel: 'Resultado', readyTitle: 'Listo para limpiar', download: 'Descargar' },
   hi: { brandTitle: 'AI वॉटरमार्क रिमूवर', headline: 'वॉटरमार्क और छिपे निशान अभी हटाएँ।', subtitle: 'Claude, ChatGPT/OpenAI, Gemini आदि के दिखने वाले और छिपे AI watermark, C2PA, EXIF/XMP, invisible Unicode और metadata साफ़ करें।', chooseFile: 'फ़ाइल चुनें', cleanDownload: 'साफ़ करें और डाउनलोड करें', cleanText: 'टेक्स्ट साफ़ करें', resultLabel: 'परिणाम', readyTitle: 'साफ़ करने के लिए तैयार', download: 'डाउनलोड' },
@@ -42,7 +42,7 @@ const localePacks = {
   it: { language:'Lingua', eyebrow:'Apri · Pulisci · Scarica', brandTitle:'Rimozione watermark AI', headline:'Rimuovi watermark e tracce nascoste ora.', subtitle:'Rimuove watermark visibili e nascosti da Claude, ChatGPT/OpenAI, Gemini e altri: segni nel testo, C2PA, EXIF/XMP, Unicode invisibile e metadati dei documenti.', targetUnicode:'Unicode nascosto', targetMetadata:'Metadati', targetDocs:'Tracce del documento', fileTab:'File', textTab:'Testo', chooseFile:'Scegli file', fileHint:'txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB', autoDetect:'Rileva automaticamente il tipo di file', asText:'Testo', asImage:'Immagine', asDocument:'Documento', nfkc:'Normalizza testo', deepClean:'Pulizia profonda del testo', keepMetadata:'Mantieni metadati immagine sicuri', nfkcTip:'Converte caratteri e spazi in una forma standard.', deepCleanTip:'Rimuove in modo più aggressivo lettere simili e caratteri nascosti.', keepMetadataTip:'Mantiene normali informazioni di fotocamera/app; disattiva per rimuovere più metadati.', inspect:'Controlla prima', cleanDownload:'Rimuovi watermark', textPlaceholder:'Incolla qui il testo. Unicode invisibile e spazi sospetti verranno puliti.', cleanText:'Pulisci testo', copyResult:'Copia risultato', resultLabel:'Risultato', readyTitle:'Pronto per la pulizia', download:'Scarica file pulito', stepUpload:'Carica o incolla contenuto', stepScan:'Scansione watermark e tracce', stepClean:'Pulizia delle tracce supportate', removedCount:'Rimossi', traceTypes:'Tipi di traccia', readyMessage:'Scegli un file o incolla testo: qui vedrai cosa è stato trovato e rimosso.', inspecting:'Controllo file…', cleaningTitle:'Pulizia in corso…', cleaning:'Pulizia del file in corso…', cleaningText:'Pulizia del testo in corso…', doneTitle:'Pulizia completata', checkedTitle:'Controllo completato', nothingFound:'Non sono state trovate tracce supportate.', cleanedTextReady:'Testo pulito e reinserito nel campo.', copied:'Copiato', downloadReady:'Il file pulito è pronto.', expiresNotice:'Scarica presto: i file puliti vengono eliminati dopo 10 minuti.', errorTitle:'Impossibile elaborare', rawReport:'Rapporto tecnico', found:'Trovato', cleaned:'Pulito', risk:'Nota', fileSelected:'Selezionato', foundVisibleWatermark:'Trovato {count} watermark visibile', removedVisibleWatermark:'Rimosso {count} watermark visibile', foundAiWatermarkC2pa:'Trovato {count} possibile watermark AI (metadati C2PA)', removedAiWatermarkC2pa:'Rimosso {count} watermark AI (metadati C2PA)', foundHiddenUnicode:'Trovato {count} segno di testo nascosto (Unicode invisibile)', removedHiddenUnicode:'Rimosso {count} segno di testo nascosto (Unicode invisibile)', foundImageMetadata:'Trovata {count} traccia di metadati immagine', removedImageMetadata:'Rimossa {count} traccia di metadati immagine', foundDocumentTrace:'Trovata {count} traccia del documento', removedDocumentTrace:'Rimossa {count} traccia del documento', foundGenericTrace:'Trovata {count} traccia supportata', removedGenericTrace:'Rimossa {count} traccia supportata' }
 };
 
-const rtlLocales = new Set(['ar', 'fa', 'ur', 'he']);
+const rtlLocales = new Set(['ar']);
 const fallback = copy.en;
 const currentLocale = document.documentElement.lang || 'en';
 const localizedFallback = currentLocale === 'en' ? fallback : (localePacks[currentLocale] || copy.zh);
@@ -60,6 +60,228 @@ const reportCopy = {
   ar: { foundAiWatermarkC2pa:'تم العثور على {count} علامة AI محتملة (بيانات C2PA)', removedAiWatermarkC2pa:'تمت إزالة {count} علامة AI (بيانات C2PA)', foundHiddenUnicode:'تم العثور على {count} علامة نص مخفية (Unicode غير مرئي)', removedHiddenUnicode:'تمت إزالة {count} علامة نص مخفية (Unicode غير مرئي)', foundImageMetadata:'تم العثور على {count} أثر بيانات صورة', removedImageMetadata:'تمت إزالة {count} أثر بيانات صورة', foundDocumentTrace:'تم العثور على {count} أثر مستند', removedDocumentTrace:'تمت إزالة {count} أثر مستند', foundGenericTrace:'تم العثور على {count} أثر مدعوم', removedGenericTrace:'تمت إزالة {count} أثر مدعوم' }
 };
 Object.assign(dictionary, reportCopy[currentLocale] || (currentLocale === 'en' ? reportCopy.en : reportCopy.zh));
+
+// ---------- Structured summary i18n (Detection Summary + Actions Taken) ----------
+const structuredCopy = {
+  en: {
+    detectionTitle: 'Detected content',
+    actionsTitle: 'Actions taken',
+    detectionNone: 'No supported watermark or metadata traces were detected.',
+    actionsNone: 'Nothing needed to be removed.',
+    detectZeroWidth: 'Found {count} zero-width character(s) ({codepoint})',
+    detectHomoglyph: 'Found {count} look-alike / homoglyph character(s)',
+    detectSpaceHomoglyph: 'Found {count} suspicious whitespace character(s)',
+    detectBidi: 'Found {count} bidi / RTL control character(s)',
+    detectVariationSelector: 'Found {count} variation-selector character(s)',
+    detectTagChar: 'Found {count} Unicode tag character(s) (U+E0000 series)',
+    detectPrivateUse: 'Found {count} private-use area character(s)',
+    detectC2pa: 'Found C2PA content credentials',
+    detectExif: 'Found EXIF metadata',
+    detectXmp: 'Found XMP metadata',
+    detectIptc: 'Found IPTC metadata',
+    detectPngChunk: 'Found suspicious PNG text chunk(s)',
+    detectJpegSegment: 'Found suspicious JPEG APP segment(s)',
+    detectWebpChunk: 'Found suspicious WebP metadata chunk(s)',
+    detectAiKeyword: 'Found AI-related metadata keywords (Claude / Anthropic / OpenAI / SynthID)',
+    detectPdfMeta: 'Found PDF metadata (author / creator / timestamps)',
+    detectDocxMeta: 'Found DOCX metadata (author / template / revision)',
+    detectOdtMeta: 'Found ODT metadata (author / editing history)',
+    detectVisibleWatermark: 'Found {count} visible watermark',
+    detectGeneric: 'Found: {label}',
+    actionCleanZeroWidth: 'Removed {count} zero-width character(s)',
+    actionCleanHomoglyph: 'Normalized {count} look-alike / homoglyph character(s)',
+    actionCleanSpaceHomoglyph: 'Normalized {count} suspicious whitespace character(s)',
+    actionCleanBidi: 'Removed {count} bidi / RTL control character(s)',
+    actionCleanVariationSelector: 'Removed {count} variation-selector character(s)',
+    actionCleanTagChar: 'Removed {count} Unicode tag character(s)',
+    actionCleanPrivateUse: 'Removed {count} private-use area character(s)',
+    actionStripMetadata: 'Stripped file metadata (C2PA / EXIF / XMP / IPTC)',
+    actionStripPngChunk: 'Removed suspicious PNG text chunk(s)',
+    actionStripJpegSegment: 'Removed suspicious JPEG APP segment(s)',
+    actionStripWebpChunk: 'Removed suspicious WebP metadata chunk(s)',
+    actionStripAiKeyword: 'Removed AI-related metadata keywords',
+    actionStripPdfMeta: 'Stripped PDF metadata',
+    actionStripDocxMeta: 'Stripped DOCX metadata',
+    actionStripOdtMeta: 'Stripped ODT metadata',
+    actionRemoveVisibleWatermark: 'Removed {count} visible watermark',
+    actionSynthidWhitespace: 'Inserted {count} legal invisible-width space(s) to disrupt statistical watermark features',
+    actionSynthidSynonyms: 'Replaced {count} word(s) with close synonyms to break statistical watermark features',
+    actionGeneric: '{label}',
+  },
+  zh: {
+    detectionTitle: '检测到的内容',
+    actionsTitle: '已执行的操作',
+    detectionNone: '未发现当前支持处理的水印或元数据痕迹。',
+    actionsNone: '没有需要处理的内容。',
+    detectZeroWidth: '发现 {count} 个零宽字符（{codepoint}）',
+    detectHomoglyph: '发现 {count} 个形近字/相似字符',
+    detectSpaceHomoglyph: '发现 {count} 个可疑空白字符',
+    detectBidi: '发现 {count} 个 Bidi/RTL 控制字符',
+    detectVariationSelector: '发现 {count} 个 Variation Selector 字符',
+    detectTagChar: '发现 {count} 个 Unicode 标记字符（U+E0000 系列）',
+    detectPrivateUse: '发现 {count} 个 Private Use 区字符',
+    detectC2pa: '发现 C2PA 内容凭证（Content Credentials）',
+    detectExif: '发现 EXIF 元数据',
+    detectXmp: '发现 XMP 元数据',
+    detectIptc: '发现 IPTC 元数据',
+    detectPngChunk: '发现可疑的 PNG 文本块',
+    detectJpegSegment: '发现可疑的 JPEG APP 段',
+    detectWebpChunk: '发现可疑的 WebP 元数据块',
+    detectAiKeyword: '发现 AI 相关元数据关键字（Claude / Anthropic / OpenAI / SynthID）',
+    detectPdfMeta: '发现 PDF 文档元数据（作者 / 创作软件 / 时间戳）',
+    detectDocxMeta: '发现 DOCX 文档元数据（作者 / 模板 / 修订记录）',
+    detectOdtMeta: '发现 ODT 文档元数据（作者 / 编辑历史）',
+    detectVisibleWatermark: '发现 {count} 个可见水印',
+    detectGeneric: '发现：{label}',
+    actionCleanZeroWidth: '已清除 {count} 个零宽字符',
+    actionCleanHomoglyph: '已还原 {count} 个形近字/相似字符',
+    actionCleanSpaceHomoglyph: '已规范化 {count} 个可疑空白字符',
+    actionCleanBidi: '已清除 {count} 个 Bidi/RTL 控制字符',
+    actionCleanVariationSelector: '已清除 {count} 个 Variation Selector 字符',
+    actionCleanTagChar: '已清除 {count} 个 Unicode 标记字符',
+    actionCleanPrivateUse: '已清除 {count} 个 Private Use 区字符',
+    actionStripMetadata: '已清除文件元数据（C2PA / EXIF / XMP / IPTC）',
+    actionStripPngChunk: '已移除可疑的 PNG 文本块',
+    actionStripJpegSegment: '已移除可疑的 JPEG APP 段',
+    actionStripWebpChunk: '已移除可疑的 WebP 元数据块',
+    actionStripAiKeyword: '已移除 AI 相关元数据关键字',
+    actionStripPdfMeta: '已清除 PDF 元数据',
+    actionStripDocxMeta: '已清除 DOCX 元数据',
+    actionStripOdtMeta: '已清除 ODT 元数据',
+    actionRemoveVisibleWatermark: '已移除 {count} 个可见水印',
+    actionSynthidWhitespace: '已插入 {count} 个合法不可见宽度空白符，用于破坏统计型水印特征',
+    actionSynthidSynonyms: '已对 {count} 个词进行同义替换，用于打破统计型水印的用词模式',
+    actionGeneric: '{label}',
+  },
+  hi: {
+    detectionTitle: 'पहचानी गई सामग्री',
+    actionsTitle: 'किए गए कार्य',
+    detectionNone: 'कोई समर्थित watermark या metadata निशान नहीं मिला।',
+    actionsNone: 'हटाने के लिए कुछ नहीं मिला।',
+    detectZeroWidth: '{count} zero-width अक्षर मिले ({codepoint})',
+    detectAiKeyword: 'AI संबंधित metadata कीवर्ड मिले (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'C2PA content credentials मिले',
+    detectExif: 'EXIF metadata मिला',
+    detectXmp: 'XMP metadata मिला',
+    detectVisibleWatermark: '{count} दृश्य watermark मिला',
+    detectGeneric: 'मिला: {label}',
+    actionCleanZeroWidth: '{count} zero-width अक्षर हटाए',
+    actionStripMetadata: 'फ़ाइल metadata हटाया (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: 'सांख्यिकीय watermark तोड़ने के लिए {count} अदृश्य space जोड़े',
+    actionSynthidSynonyms: '{count} शब्दों को समानार्थक शब्दों से बदला',
+    actionGeneric: '{label}',
+  },
+  es: {
+    detectionTitle: 'Contenido detectado',
+    actionsTitle: 'Acciones realizadas',
+    detectionNone: 'No se detectaron marcas de agua ni metadatos compatibles.',
+    actionsNone: 'No hubo nada que eliminar.',
+    detectZeroWidth: '{count} carácter(es) de ancho cero encontrados ({codepoint})',
+    detectAiKeyword: 'Se encontraron palabras clave de metadatos de IA (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'Se encontraron credenciales de contenido C2PA',
+    detectExif: 'Se encontraron metadatos EXIF',
+    detectXmp: 'Se encontraron metadatos XMP',
+    detectVisibleWatermark: '{count} marca de agua visible encontrada',
+    detectGeneric: 'Encontrado: {label}',
+    actionCleanZeroWidth: 'Se eliminaron {count} carácter(es) de ancho cero',
+    actionStripMetadata: 'Se eliminó el metadatos del archivo (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: 'Se insertaron {count} espacio(s) invisibles legales para romper la marca estadística',
+    actionSynthidSynonyms: 'Se reemplazaron {count} palabra(s) con sinónimos cercanos',
+    actionGeneric: '{label}',
+  },
+  fr: {
+    detectionTitle: 'Contenu détecté',
+    actionsTitle: 'Actions effectuées',
+    detectionNone: 'Aucune trace de filigrane ou de métadonnées prise en charge n’a été détectée.',
+    actionsNone: 'Rien à supprimer.',
+    detectZeroWidth: '{count} caractère(s) de largeur nulle trouvé(s) ({codepoint})',
+    detectAiKeyword: 'Mots-clés de métadonnées liés à l’IA trouvés (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'Content Credentials C2PA trouvés',
+    detectExif: 'Métadonnées EXIF trouvées',
+    detectXmp: 'Métadonnées XMP trouvées',
+    detectVisibleWatermark: '{count} filigrane visible trouvé',
+    detectGeneric: 'Trouvé : {label}',
+    actionCleanZeroWidth: '{count} caractère(s) de largeur nulle supprimé(s)',
+    actionStripMetadata: 'Métadonnées du fichier supprimées (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: '{count} espace(s) invisible(s) légal(aux) insérés pour perturber le filigrane statistique',
+    actionSynthidSynonyms: '{count} mot(s) remplacés par des synonymes proches',
+    actionGeneric: '{label}',
+  },
+  de: {
+    detectionTitle: 'Erkannte Inhalte',
+    actionsTitle: 'Durchgeführte Aktionen',
+    detectionNone: 'Es wurden keine unterstützten Wasserzeichen oder Metadaten-Spuren gefunden.',
+    actionsNone: 'Es musste nichts entfernt werden.',
+    detectZeroWidth: '{count} Nullbreiten-Zeichen gefunden ({codepoint})',
+    detectAiKeyword: 'KI-bezogene Metadaten-Schlüsselwörter gefunden (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'C2PA Content Credentials gefunden',
+    detectExif: 'EXIF-Metadaten gefunden',
+    detectXmp: 'XMP-Metadaten gefunden',
+    detectVisibleWatermark: '{count} sichtbares Wasserzeichen gefunden',
+    detectGeneric: 'Gefunden: {label}',
+    actionCleanZeroWidth: '{count} Nullbreiten-Zeichen entfernt',
+    actionStripMetadata: 'Datei-Metadaten entfernt (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: '{count} legale unsichtbare Leerzeichen eingefügt, um statistisches Wasserzeichen zu stören',
+    actionSynthidSynonyms: '{count} Wort(e) durch nahe Synonyme ersetzt',
+    actionGeneric: '{label}',
+  },
+  ar: {
+    detectionTitle: 'المحتوى المكتشف',
+    actionsTitle: 'الإجراءات المتخذة',
+    detectionNone: 'لم يتم العثور على علامات مائية أو بيانات وصفية مدعومة.',
+    actionsNone: 'لا شيء للإزالة.',
+    detectZeroWidth: 'تم العثور على {count} حرف بعرض صفري ({codepoint})',
+    detectAiKeyword: 'تم العثور على كلمات مفتاحية مرتبطة بالذكاء الاصطناعي (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'تم العثور على اعتمادات محتوى C2PA',
+    detectExif: 'تم العثور على بيانات EXIF',
+    detectXmp: 'تم العثور على بيانات XMP',
+    detectVisibleWatermark: 'تم العثور على {count} علامة مائية مرئية',
+    detectGeneric: 'تم العثور: {label}',
+    actionCleanZeroWidth: 'تمت إزالة {count} حرف بعرض صفري',
+    actionStripMetadata: 'تمت إزالة بيانات الملف الوصفية (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: 'تم إدراج {count} مسافة غير مرئية قانونية لإرباك العلامة الإحصائية',
+    actionSynthidSynonyms: 'تم استبدال {count} كلمة بمرادفاتها القريبة',
+    actionGeneric: '{label}',
+  },
+  ja: {
+    detectionTitle: '検出された内容',
+    actionsTitle: '実行した処理',
+    detectionNone: '対応する透かしやメタデータの痕跡は見つかりませんでした。',
+    actionsNone: '削除すべきものはありませんでした。',
+    detectZeroWidth: 'ゼロ幅文字を {count} 個検出（{codepoint}）',
+    detectAiKeyword: 'AI 関連のメタデータキーワードを検出（Claude / Anthropic / OpenAI / SynthID）',
+    detectC2pa: 'C2PA コンテンツ資格情報を検出',
+    detectExif: 'EXIF メタデータを検出',
+    detectXmp: 'XMP メタデータを検出',
+    detectVisibleWatermark: '可視透かしを {count} 個検出',
+    detectGeneric: '検出：{label}',
+    actionCleanZeroWidth: 'ゼロ幅文字を {count} 個削除',
+    actionStripMetadata: 'ファイルのメタデータを削除（C2PA / EXIF / XMP）',
+    actionSynthidWhitespace: '統計的透かしを崩すため、合法な不可視空白を {count} 個挿入',
+    actionSynthidSynonyms: '{count} 個の語を近い同義語に置換',
+    actionGeneric: '{label}',
+  },
+  ko: {
+    detectionTitle: '감지된 내용',
+    actionsTitle: '수행한 조치',
+    detectionNone: '지원되는 워터마크 또는 메타데이터 흔적을 찾지 못했습니다.',
+    actionsNone: '제거할 내용이 없습니다.',
+    detectZeroWidth: '너비 0 문자 {count}개 발견 ({codepoint})',
+    detectAiKeyword: 'AI 관련 메타데이터 키워드 발견 (Claude / Anthropic / OpenAI / SynthID)',
+    detectC2pa: 'C2PA 콘텐츠 자격증명 발견',
+    detectExif: 'EXIF 메타데이터 발견',
+    detectXmp: 'XMP 메타데이터 발견',
+    detectVisibleWatermark: '보이는 워터마크 {count}개 발견',
+    detectGeneric: '발견: {label}',
+    actionCleanZeroWidth: '너비 0 문자 {count}개 제거',
+    actionStripMetadata: '파일 메타데이터 제거 (C2PA / EXIF / XMP)',
+    actionSynthidWhitespace: '통계적 워터마크를 흐트리기 위해 합법 비가시 폭 공백 {count}개 삽입',
+    actionSynthidSynonyms: '{count}개 단어를 가까운 동의어로 교체',
+    actionGeneric: '{label}',
+  },
+};
+const structuredDict = { ...structuredCopy.en, ...(structuredCopy[currentLocale] || {}) };
+function s(key) { return structuredDict[key] || structuredCopy.en[key] || key; }
 
 const languageSelect = document.querySelector('#languageSelect');
 const fileForm = document.querySelector('#fileForm');
@@ -401,6 +623,128 @@ function formatReportItem(item) {
   return String(item ?? '');
 }
 
+function classifyKind(rawText) {
+  const lower = String(rawText || '').toLowerCase();
+  if (lower.includes('zero width') || lower.includes('zero-width') || /u\+200[a-f]/i.test(lower) || lower.includes('ufeff') || lower.includes('u+feff')) return 'ZeroWidth';
+  if (lower.includes('bidi') || lower.includes('rtl override') || lower.includes('lrm') || lower.includes('rlm') || lower.includes('u+202') || lower.includes('u+2066')) return 'Bidi';
+  if (lower.includes('variation selector') || /u\+fe0[0-9a-f]/i.test(lower) || /u\+e01[0-9a-f]/i.test(lower)) return 'VariationSelector';
+  if (lower.includes('tag') || /u\+e00[0-9a-f]/i.test(lower) || /u\+e007[0-9a-f]/i.test(lower)) return 'TagChar';
+  if (lower.includes('private use') || lower.includes('private-use') || lower.includes('pua')) return 'PrivateUse';
+  if (lower.includes('space') && (lower.includes('u+') || lower.includes('nbsp') || lower.includes('en space') || lower.includes('em space') || lower.includes('exotic'))) return 'SpaceHomoglyph';
+  if (lower.includes('homoglyph') || lower.includes('confusable') || lower.includes('cyrillic') || lower.includes('fullwidth') || lower.includes('lookalike')) return 'Homoglyph';
+  if (lower.includes('c2pa') || lower.includes('content credential') || lower.includes('cabx') || lower.includes('jumb')) return 'C2pa';
+  if (lower.includes('exif')) return 'Exif';
+  if (lower.includes('xmp')) return 'Xmp';
+  if (lower.includes('iptc')) return 'Iptc';
+  if (lower.includes('png chunk') || lower.includes('itxt') || lower.includes('text chunk') || lower.includes('ztxt')) return 'PngChunk';
+  if (lower.includes('jpeg app') || lower.includes('app segment') || lower.includes('app1') || lower.includes('app2') || lower.includes('app11')) return 'JpegSegment';
+  if (lower.includes('webp')) return 'WebpChunk';
+  if (lower.includes('claude') || lower.includes('anthropic') || lower.includes('openai') || lower.includes('generated by') || lower.includes('synthid') || lower.includes('dcterms:provenance')) return 'AiKeyword';
+  if (lower.includes('pdf metadata') || lower.includes('pdf trailer') || lower.includes('pdf info') || lower.includes('/producer') || lower.includes('/creator')) return 'PdfMeta';
+  if (lower.includes('docx') || lower.includes('doc metadata') || lower.includes('core.xml') || lower.includes('app.xml')) return 'DocxMeta';
+  if (lower.includes('odt') || lower.includes('meta.xml')) return 'OdtMeta';
+  if (lower.includes('visible watermark') || lower.includes('watermark overlay') || lower.includes('text watermark')) return 'VisibleWatermark';
+  if (lower.includes('metadata')) return 'Metadata';
+  return 'Generic';
+}
+
+function formatDetectionEntry(rawLabel, count) {
+  const kind = classifyKind(rawLabel);
+  const label = formatReportItem(rawLabel);
+  const codepointMatch = String(rawLabel).match(/U\+[0-9A-Fa-f]{2,6}/);
+  const codepoint = codepointMatch ? codepointMatch[0].toUpperCase() : '';
+  const key = `detect${kind}`;
+  let template = structuredDict[key] || structuredCopy.en[key];
+  if (!template) template = s('detectGeneric');
+  const c = Math.max(1, Number(count) || 1);
+  return template.replace('{count}', String(c)).replace('{codepoint}', codepoint || 'U+200B').replace('{label}', label);
+}
+
+function formatActionEntry(rawLabel, count) {
+  const kind = classifyKind(rawLabel);
+  const label = formatReportItem(rawLabel);
+  const c = Math.max(1, Number(count) || 1);
+  const actionKeyByKind = {
+    ZeroWidth: 'actionCleanZeroWidth',
+    Homoglyph: 'actionCleanHomoglyph',
+    SpaceHomoglyph: 'actionCleanSpaceHomoglyph',
+    Bidi: 'actionCleanBidi',
+    VariationSelector: 'actionCleanVariationSelector',
+    TagChar: 'actionCleanTagChar',
+    PrivateUse: 'actionCleanPrivateUse',
+    C2pa: 'actionStripMetadata',
+    Exif: 'actionStripMetadata',
+    Xmp: 'actionStripMetadata',
+    Iptc: 'actionStripMetadata',
+    Metadata: 'actionStripMetadata',
+    PngChunk: 'actionStripPngChunk',
+    JpegSegment: 'actionStripJpegSegment',
+    WebpChunk: 'actionStripWebpChunk',
+    AiKeyword: 'actionStripAiKeyword',
+    PdfMeta: 'actionStripPdfMeta',
+    DocxMeta: 'actionStripDocxMeta',
+    OdtMeta: 'actionStripOdtMeta',
+    VisibleWatermark: 'actionRemoveVisibleWatermark',
+  };
+  const key = actionKeyByKind[kind];
+  let template = key ? (structuredDict[key] || structuredCopy.en[key]) : null;
+  if (!template) template = s('actionGeneric');
+  return template.replace('{count}', String(c)).replace('{label}', label);
+}
+
+function buildStructuredSummary(payload, mode) {
+  const report = payload.report || {};
+  const stats = report.stats || {};
+  const removed = stats.removed || {};
+  const replaced = stats.replaced || {};
+  const preFindings = report.pre_findings || report.findings || [];
+  const postFindings = report.post_findings || [];
+  const hits = Array.isArray(report.hits) ? report.hits : [];
+  const rawActions = (report.actions || []).filter((a) => !isNoopReportItem(a));
+  const neut = report.synthid_neutralize || {};
+
+  const detection = [];
+  const detectionSeen = new Set();
+  const pushDetection = (text) => { if (!text) return; if (detectionSeen.has(text)) return; detectionSeen.add(text); detection.push(text); };
+
+  Object.entries(removed).forEach(([label, count]) => pushDetection(formatDetectionEntry(label, Number(count) || 0)));
+  Object.entries(replaced).forEach(([label, count]) => pushDetection(formatDetectionEntry(label, Number(count) || 0)));
+  hits.forEach((hit) => {
+    if (!hit) return;
+    const label = hit.label || hit.codepoint || hit.kind || '';
+    const count = hit.count || 1;
+    pushDetection(formatDetectionEntry(label, count));
+  });
+  preFindings.forEach((finding) => {
+    if (!finding || isNoopReportItem(finding)) return;
+    pushDetection(formatDetectionEntry(String(finding), 1));
+  });
+  if (report.has_c2pa && !detection.some((d) => d === s('detectC2pa'))) pushDetection(s('detectC2pa'));
+  if (report.has_ai_metadata && !detection.some((d) => d === s('detectAiKeyword'))) pushDetection(s('detectAiKeyword'));
+
+  const actions = [];
+  const actionsSeen = new Set();
+  const pushAction = (text) => { if (!text) return; if (actionsSeen.has(text)) return; actionsSeen.add(text); actions.push(text); };
+
+  if (mode !== 'inspect') {
+    Object.entries(removed).forEach(([label, count]) => pushAction(formatActionEntry(label, Number(count) || 0)));
+    Object.entries(replaced).forEach(([label, count]) => pushAction(formatActionEntry(label, Number(count) || 0)));
+    rawActions.forEach((action) => pushAction(formatActionEntry(String(action), 1)));
+
+    const wsChanged = Number(neut?.whitespace?.changed_spaces || 0);
+    if (wsChanged > 0) pushAction(s('actionSynthidWhitespace').replace('{count}', String(wsChanged)));
+    const synCount = Number(
+      neut?.synonyms?.selected_count
+      ?? neut?.synonyms?.replaced_count
+      ?? neut?.synonyms?.candidate_count
+      ?? 0
+    );
+    if (synCount > 0) pushAction(s('actionSynthidSynonyms').replace('{count}', String(synCount)));
+  }
+
+  return { detection, actions };
+}
+
 function renderResult(payload, mode = 'clean') {
   document.querySelector('.result-card')?.classList.add('expanded');
   const summary = summarizeReport(payload, mode);
@@ -408,16 +752,23 @@ function renderResult(payload, mode = 'clean') {
   removedCount.textContent = String(summary.count || 0);
   traceTypes.textContent = String(summary.typeCount || 0);
 
-  const visibleItems = summary.items.length ? summary.items : [{ label: summary.lead, value: '' }];
-  clearList.innerHTML = `
-    <ul>${visibleItems.slice(0, 8).map((item) => `<li>${item.value ? `<strong>${escapeHtml(String(item.value))}</strong> ` : ''}${escapeHtml(item.label)}</li>`).join('')}</ul>
-    ${summary.report.notes ? `<p class="raw-details">${escapeHtml(summary.report.notes)}</p>` : ''}
-    <details><summary>${escapeHtml(t('rawReport'))}</summary><pre class="raw-details">${escapeHtml(JSON.stringify(summary.report, null, 2))}</pre></details>
-  `;
+  const structured = buildStructuredSummary(payload, mode);
+  const detectionList = structured.detection.length ? structured.detection : [s('detectionNone')];
+  const actionsList = structured.actions.length ? structured.actions : (mode === 'inspect' ? [] : [s('actionsNone')]);
+
+  const sections = [];
+  sections.push(`<div class="report-section"><h3 class="report-section-title">${escapeHtml(s('detectionTitle'))}</h3><ul class="report-list">${detectionList.slice(0, 12).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`);
+  if (actionsList.length) {
+    sections.push(`<div class="report-section"><h3 class="report-section-title">${escapeHtml(s('actionsTitle'))}</h3><ul class="report-list">${actionsList.slice(0, 12).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`);
+  }
+  clearList.innerHTML = sections.join('');
+
   showSynthidResult(payload.synthid);
   setSteps(3);
   textSuccess.classList.toggle('hidden', mode !== 'text');
-  expiryNotice.classList.toggle('hidden', !summary.downloadUrl);
+  // Show the 10-min deletion notice whenever a downloadable file (server or client blob) is produced
+  const hasDownload = Boolean(summary.downloadUrl) || mode === 'clean';
+  expiryNotice.classList.toggle('hidden', mode === 'text' ? true : !hasDownload);
   return summary;
 }
 
@@ -498,7 +849,7 @@ fileForm.addEventListener('submit', async (event) => {
       downloadLink.href = currentBlobUrl;
       downloadLink.download = buildTextDownloadName(file.name);
       downloadLink.classList.remove('hidden');
-      expiryNotice.classList.add('hidden');
+      expiryNotice.classList.remove('hidden');
       textSuccess.classList.add('hidden');
       trackEvent('clean_succeeded', {
         category: 'file',
@@ -522,6 +873,7 @@ fileForm.addEventListener('submit', async (event) => {
       downloadLink.href = `${payload.download_url}?name=${encodeURIComponent(payload.download_name || 'cleaned-file')}`;
       downloadLink.download = payload.download_name || 'cleaned-file';
       downloadLink.classList.remove('hidden');
+      expiryNotice.classList.remove('hidden');
     }
   } catch (error) {
     trackEvent('clean_failed', {

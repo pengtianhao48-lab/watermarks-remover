@@ -10,6 +10,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir -r requirements.txt \
     && python -m spacy download en_core_web_sm \
+    && python -m spacy download zh_core_web_sm \
+    && python -m spacy download es_core_news_sm \
+    && python -m spacy download fr_core_news_sm \
+    && python -m spacy download de_core_news_sm \
+    && python -m spacy download ja_core_news_sm \
     && python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 
 COPY . .

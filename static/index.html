@@ -118,7 +118,7 @@
           </div>
           <div class="result-actions">
             <a id="downloadLink" class="download hidden" href="#" data-i18n="download">Download file</a>
-            <p id="expiryNotice" class="expiry-note hidden" data-i18n="expiresNotice">Download soon: cleaned files are deleted after 10 minutes.</p>
+            <p id="expiryNotice" class="expiry-note hidden" data-i18n="expiresNotice">This file will be automatically deleted in 10 minutes.</p>
             <p id="textSuccess" class="success-note hidden" data-i18n="cleanedTextReady">Text cleaned and placed back in the box.</p>
           </div>
         </div>
@@ -127,6 +127,14 @@
           <li class="pending" data-i18n="stepScan">Scan for watermarks and traces</li>
           <li class="pending" data-i18n="stepClean">Clean supported traces</li>
         </ol>
+        <div id="synthidRow" class="synthid-row hidden">
+          <div class="synthid-main">
+            <span data-i18n="synthidLabel">Claude 电子水印检测：</span>
+            <strong id="synthidScoreValue" class="synthid-score low">0%</strong>
+            <span data-i18n="synthidSuffix">疑似含水印</span>
+          </div>
+          <button class="tip" type="button" data-tooltip-i18n="synthidTooltip" aria-label="Explain SynthID score">?</button>
+        </div>
         <div class="summary-grid" id="summaryGrid">
           <div><span data-i18n="removedCount">Removed</span><strong id="removedCount">0</strong></div>
           <div><span data-i18n="traceTypes">Trace types</span><strong id="traceTypes">0</strong></div>
@@ -138,14 +146,6 @@
             <li><strong>C2PA / EXIF / XMP</strong><span data-i18n="targetMetadata">Metadata</span></li>
             <li><strong>PDF / DOCX</strong><span data-i18n="targetDocs">Document traces</span></li>
           </ul>
-        </div>
-        <div id="synthidRow" class="synthid-row hidden">
-          <div class="synthid-main">
-            <span data-i18n="synthidLabel">Claude 电子水印检测：</span>
-            <strong id="synthidScoreValue" class="synthid-score low">0%</strong>
-            <span data-i18n="synthidSuffix">疑似含水印</span>
-          </div>
-          <button class="tip" type="button" data-tooltip-i18n="synthidTooltip" aria-label="Explain SynthID score">?</button>
         </div>
       </aside>
     </section>
