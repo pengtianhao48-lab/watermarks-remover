@@ -52,8 +52,9 @@ AI_FRONTMATTER_KEYS = frozenset(
 )
 
 AI_META_NAME_RE = re.compile(
-    r"generator|ai[-_ ]?generated|claude|anthropic|openai|gemini|synthid|"
-    r"c2pa|content.?credential|provenance|digital.?source|trained.?algorithmic.?media|aigc",
+    r"generator|ai[-_ ]?generated|ai generated|ai writer|claude|anthropic|openai|gemini|synthid|"
+    r"midjourney|c2pa|content.?credential|provenance|digital.?source|trained.?algorithmic.?media|"
+    r"algorithmic.?media|aigc",
     re.I,
 )
 
@@ -498,18 +499,26 @@ def _scrub_docx_property_xml(name: str, raw: bytes, actions: list[str]) -> bytes
     new = text
     field_patterns = (
         (r"(<dc:creator[^>]*>)(.*?)(</dc:creator>)", "dc:creator"),
+        (r"(<dc:title[^>]*>)(.*?)(</dc:title>)", "dc:title"),
+        (r"(<dc:subject[^>]*>)(.*?)(</dc:subject>)", "dc:subject"),
+        (r"(<dc:description[^>]*>)(.*?)(</dc:description>)", "dc:description"),
+        (r"(<cp:keywords[^>]*>)(.*?)(</cp:keywords>)", "cp:keywords"),
         (r"(<cp:lastModifiedBy[^>]*>)(.*?)(</cp:lastModifiedBy>)", "cp:lastModifiedBy"),
         (r"(<Application[^>]*>)(.*?)(</Application>)", "Application"),
         (r"(<AppVersion[^>]*>)(.*?)(</AppVersion>)", "AppVersion"),
+        (r"(<Company[^>]*>)(.*?)(</Company>)", "Company"),
+        (r"(<Comments[^>]*>)(.*?)(</Comments>)", "Comments"),
         (r"(<(?:[A-Za-z_][\w.-]*:)?trainedAlgorithmicMedia\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?trainedAlgorithmicMedia>)", "trainedAlgorithmicMedia"),
+        (r"(<(?:[A-Za-z_][\w.-]*:)?algorithmicMedia\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?algorithmicMedia>)", "algorithmicMedia"),
         (r"(<(?:[A-Za-z_][\w.-]*:)?AIGC\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?AIGC>)", "AIGC"),
+        (r"(<(?:[A-Za-z_][\w.-]*:)?aigc\b[^>]*>)(.*?)(</(?:[A-Za-z_][\w.-]*:)?aigc>)", "aigc"),
     )
     for pat, label in field_patterns:
         def _sub(match: re.Match[str], _label: str = label) -> str:
             inner = match.group(2)
             if AI_META_NAME_RE.search(inner) or AI_META_NAME_RE.search(_label):
                 actions.append(f"scrub {name} field {_label}")
-                if _label in ("trainedAlgorithmicMedia", "AIGC"):
+                if _label in ("trainedAlgorithmicMedia", "algorithmicMedia", "AIGC", "aigc"):
                     return ""
                 return match.group(1) + match.group(3)
             if _label in ("Application", "AppVersion") and re.search(
