@@ -4,6 +4,7 @@ import json
 from html import escape as html_escape
 import shutil
 import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -19,12 +20,16 @@ from fastapi.staticfiles import StaticFiles
 ROOT = Path(__file__).resolve().parent
 SCRIPTS = ROOT / "service" / "scripts"
 STATIC = ROOT / "static"
+sys.path.insert(0, str(SCRIPTS))
+
+from synthid_text import detect_synthid_likelihood, neutralize_synthid_text  # noqa: E402
+
 MAX_UPLOAD_BYTES = 32 * 1024 * 1024
 OUTPUT_RETENTION_SECONDS = 10 * 60
 OUTPUTS = Path(tempfile.gettempdir()) / "watermarks-remover-outputs"
 SITE_URL = "https://watermarks-remover-production.up.railway.app"
 BRAND_NAME = "AI Watermarks Remover"
-ASSET_VERSION = "20260814-2028"
+ASSET_VERSION = "20260817-1905"
 HTML_HEADERS = {
     "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
     "Pragma": "no-cache",
@@ -272,6 +277,31 @@ async def clean_text(text: str = Form(...), nfkc: bool = Form(False), aggressive
     finally:
         _safe_unlink(source)
         _safe_unlink(output)
+
+
+@app.post("/detect_synthid")
+async def detect_synthid(text: str = Form(...)) -> JSONResponse:
+    if len(text.encode("utf-8")) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Text is too large")
+    result = detect_synthid_likelihood(text)
+    return JSONResponse(result)
+
+
+@app.post("/neutralize_synthid")
+async def neutralize_synthid(text: str = Form(...)) -> JSONResponse:
+    if len(text.encode("utf-8")) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Text is too large")
+    try:
+        result = neutralize_synthid_text(text)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return JSONResponse({
+        "ok": True,
+        "text": result["text"],
+        "stats": result["stats"],
+        "before": result["before"],
+        "after": result["after"],
+    })
 
 
 @app.get("/download/{job_id}")

@@ -15,10 +15,10 @@ if (!pathLocale && preferredLocale !== 'en') {
 
 const copy = {
   en: {
-    language: 'Language', eyebrow: 'Open. Clean. Download.', brandTitle: 'AI Watermarks Remover', headline: 'Remove watermarks and hidden traces now.', subtitle: 'Removes visible and hidden AI watermarks from Claude, ChatGPT/OpenAI, Gemini and more: text marks, C2PA, EXIF/XMP, invisible Unicode, and document metadata.', targetUnicode: 'Hidden Unicode', targetMetadata: 'Metadata', targetDocs: 'Document traces', fileTab: 'File', textTab: 'Text', chooseFile: 'Choose file', fileHint: 'txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB', autoDetect: 'Auto detect file type', asText: 'Text', asImage: 'Image', asDocument: 'Document', nfkc: 'Normalize text', deepClean: 'Deep text clean', keepMetadata: 'Keep safe image metadata', nfkcTip: 'Makes text use standard characters and spacing. Useful when copy/paste looks normal but behaves strangely.', deepCleanTip: 'Removes look-alike letters and hidden text tricks more aggressively. Use if a file still looks suspicious.', keepMetadataTip: 'Keeps ordinary camera/app info when it is not related to AI provenance. Turn off to strip more image metadata.', inspect: 'Check first', cleanDownload: 'Clean watermark', textPlaceholder: 'Paste text here. Invisible Unicode and suspicious spacing will be cleaned instantly.', cleanText: 'Clean text', copyResult: 'Copy result', resultLabel: 'Result', readyTitle: 'Ready to clean', download: 'Download file', stepUpload: 'Upload or paste content', stepScan: 'Scan for watermarks and traces', stepClean: 'Clean supported traces', removedCount: 'Removed', traceTypes: 'Trace types', readyMessage: 'Choose a file or paste text. You will see exactly what was found and removed.', seoTitle: 'Fast watermark and metadata removal for urgent use', seoBody: 'Works in the browser on desktop and mobile. Supports common text, image, web, and document files, with a clear after-action report for AI marks, C2PA, EXIF/XMP, invisible characters, and document metadata.', inspecting: 'Checking file…', cleaning: 'Cleaning file…', cleaningText: 'Cleaning text…', doneTitle: 'Cleaned', checkedTitle: 'Check complete', nothingFound: 'No supported traces were found.', cleanedTextReady: 'Text cleaned and placed back in the box.', copied: 'Copied', downloadReady: 'Cleaned file is ready.', errorTitle: 'Could not process', rawReport: 'Technical report', found: 'Found', cleaned: 'Cleaned', risk: 'Note', fileSelected: 'Selected', cleaningTitle: 'Cleaning…', expiresNotice: 'Download soon: cleaned files are deleted after 10 minutes.'
+    language: 'Language', eyebrow: 'Open. Clean. Download.', brandTitle: 'AI Watermarks Remover', headline: 'Remove watermarks and hidden traces now.', subtitle: 'Removes visible and hidden AI watermarks from Claude, ChatGPT/OpenAI, Gemini and more: text marks, C2PA, EXIF/XMP, invisible Unicode, and document metadata.', targetUnicode: 'Hidden Unicode', targetMetadata: 'Metadata', targetDocs: 'Document traces', fileTab: 'File', textTab: 'Text', chooseFile: 'Choose file', fileHint: 'txt, md, html, png, jpg, svg, pdf, docx, odt · max 32 MB', autoDetect: 'Auto detect file type', asText: 'Text', asImage: 'Image', asDocument: 'Document', nfkc: 'Normalize text', deepClean: 'Deep text clean', keepMetadata: 'Keep safe image metadata', nfkcTip: 'Makes text use standard characters and spacing. Useful when copy/paste looks normal but behaves strangely.', deepCleanTip: 'Removes look-alike letters and hidden text tricks more aggressively. Use if a file still looks suspicious.', keepMetadataTip: 'Keeps ordinary camera/app info when it is not related to AI provenance. Turn off to strip more image metadata.', inspect: 'Check first', cleanDownload: 'Clean watermark', textPlaceholder: 'Paste text here. Invisible Unicode and suspicious spacing will be cleaned instantly.', cleanText: 'Clean text', copyResult: 'Copy result', resultLabel: 'Result', readyTitle: 'Ready to clean', download: 'Download file', stepUpload: 'Upload or paste content', stepScan: 'Scan for watermarks and traces', stepClean: 'Clean supported traces', removedCount: 'Removed', traceTypes: 'Trace types', readyMessage: 'Choose a file or paste text. You will see exactly what was found and removed.', seoTitle: 'Fast watermark and metadata removal for urgent use', seoBody: 'Works in the browser on desktop and mobile. Supports common text, image, web, and document files, with a clear after-action report for AI marks, C2PA, EXIF/XMP, invisible characters, and document metadata.', inspecting: 'Checking file…', cleaning: 'Cleaning file…', cleaningText: 'Cleaning text…', doneTitle: 'Cleaned', checkedTitle: 'Check complete', nothingFound: 'No supported traces were found.', cleanedTextReady: 'Text cleaned and placed back in the box.', copied: 'Copied', downloadReady: 'Cleaned file is ready.', errorTitle: 'Could not process', rawReport: 'Technical report', found: 'Found', cleaned: 'Cleaned', risk: 'Note', fileSelected: 'Selected', cleaningTitle: 'Cleaning…', expiresNotice: 'Download soon: cleaned files are deleted after 10 minutes.', synthidLabel: 'Claude watermark check:', synthidSuffix: 'suspected hidden-watermark likelihood', synthidTooltip: `❓ What is a Claude watermark?\nSome AI systems can leave subtle statistical patterns in word choice.\nThey are invisible to the eye and simple copy/paste usually does not remove them.\nThis score estimates how much the current text still looks like it carries that kind of pattern.\nIt is probabilistic, not a 100% guarantee.`, neutralizeSynthid: '🔶 Remove Claude statistical watermark (this will change wording, use carefully)', neutralizeSynthidTip: `❓ How removal works and what to watch for\n\n[What it is]\nClaude-style watermarking can leave statistical fingerprints in word choice and token boundaries.\nNormal copy/paste usually does not remove them.\n\n[How we reduce it]\n1. We replace part of the ordinary spaces with legal look-alike Unicode spaces\n2. We use spaCy + WordNet to swap some verbs and adjectives with close synonyms\n\n[Important]\n⚠️ Wording may change slightly while meaning stays the same\n⚠️ Removal is probabilistic and cannot guarantee 100% success\n⚠️ Only use this when you accept light wording changes`, textFileModeNotice: 'Text file cleaned and prepared for download.'
   },
   zh: {
-    language: '语言', eyebrow: '打开 · 清理 · 下载', brandTitle: 'AI 水印移除', headline: '立即清除水印和隐藏痕迹。', subtitle: '支持 Claude、ChatGPT/OpenAI、Gemini 等常见 AI 明水印与电子水印：文字标记、C2PA、EXIF/XMP、隐藏 Unicode 和文档元数据。', targetUnicode: '隐藏 Unicode', targetMetadata: '元数据', targetDocs: '文档痕迹', fileTab: '文件', textTab: '文本', chooseFile: '选择文件', fileHint: 'txt、md、html、png、jpg、svg、pdf、docx、odt · 最大 32 MB', autoDetect: '自动识别文件类型', asText: '文本', asImage: '图片', asDocument: '文档', nfkc: '规范化文本', deepClean: '深度文本清理', keepMetadata: '保留安全图片元数据', nfkcTip: '把文字和空格转成标准形式，解决看着正常但复制异常的问题。', deepCleanTip: '更强力处理相似字母和隐藏字符；文件仍可疑时再打开。', keepMetadataTip: '保留普通相机/软件信息；关闭后会更彻底移除图片元数据。', inspect: '先检查', cleanDownload: '清除水印', textPlaceholder: '把文本粘贴到这里。隐藏 Unicode 和异常空格会被立即清理。', cleanText: '清理文本', copyResult: '复制结果', resultLabel: '结果', readyTitle: '准备清理', download: '下载文件', stepUpload: '上传或粘贴内容', stepScan: '扫描水印和电子痕迹', stepClean: '清理支持的痕迹', removedCount: '已清除', traceTypes: '痕迹类型', readyMessage: '选择文件或粘贴文本后，这里会清楚告诉你发现并处理了什么。', seoTitle: '面向着急使用场景的快速水印与元数据清除', seoBody: '桌面和手机浏览器都可用。支持常见文本、图片、网页和文档文件，并提供清晰的处理报告：AI 标记、C2PA、EXIF/XMP、隐藏字符和文档元数据。', inspecting: '正在检查文件…', cleaning: '正在清理文件…', cleaningText: '正在清理文本…', doneTitle: '已清理完成', checkedTitle: '检查完成', nothingFound: '未发现当前支持清理的痕迹。', cleanedTextReady: '文本已清理，并放回输入框。', copied: '已复制', downloadReady: '清理后的文件已准备好。', errorTitle: '处理失败', rawReport: '技术报告', found: '发现', cleaned: '已清理', risk: '提示', fileSelected: '已选择', cleaningTitle: '正在清理…', expiresNotice: '请及时下载：清理后的文件会在 10 分钟后删除。'
+    language: '语言', eyebrow: '打开 · 清理 · 下载', brandTitle: 'AI 水印移除', headline: '立即清除水印和隐藏痕迹。', subtitle: '支持 Claude、ChatGPT/OpenAI、Gemini 等常见 AI 明水印与电子水印：文字标记、C2PA、EXIF/XMP、隐藏 Unicode 和文档元数据。', targetUnicode: '隐藏 Unicode', targetMetadata: '元数据', targetDocs: '文档痕迹', fileTab: '文件', textTab: '文本', chooseFile: '选择文件', fileHint: 'txt、md、html、png、jpg、svg、pdf、docx、odt · 最大 32 MB', autoDetect: '自动识别文件类型', asText: '文本', asImage: '图片', asDocument: '文档', nfkc: '规范化文本', deepClean: '深度文本清理', keepMetadata: '保留安全图片元数据', nfkcTip: '把文字和空格转成标准形式，解决看着正常但复制异常的问题。', deepCleanTip: '更强力处理相似字母和隐藏字符；文件仍可疑时再打开。', keepMetadataTip: '保留普通相机/软件信息；关闭后会更彻底移除图片元数据。', inspect: '先检查', cleanDownload: '清除水印', textPlaceholder: '把文本粘贴到这里。隐藏 Unicode 和异常空格会被立即清理。', cleanText: '清理文本', copyResult: '复制结果', resultLabel: '结果', readyTitle: '准备清理', download: '下载文件', stepUpload: '上传或粘贴内容', stepScan: '扫描水印和电子痕迹', stepClean: '清理支持的痕迹', removedCount: '已清除', traceTypes: '痕迹类型', readyMessage: '选择文件或粘贴文本后，这里会清楚告诉你发现并处理了什么。', seoTitle: '面向着急使用场景的快速水印与元数据清除', seoBody: '桌面和手机浏览器都可用。支持常见文本、图片、网页和文档文件，并提供清晰的处理报告：AI 标记、C2PA、EXIF/XMP、隐藏字符和文档元数据。', inspecting: '正在检查文件…', cleaning: '正在清理文件…', cleaningText: '正在清理文本…', doneTitle: '已清理完成', checkedTitle: '检查完成', nothingFound: '未发现当前支持清理的痕迹。', cleanedTextReady: '文本已清理，并放回输入框。', copied: '已复制', downloadReady: '清理后的文件已准备好。', errorTitle: '处理失败', rawReport: '技术报告', found: '发现', cleaned: '已清理', risk: '提示', fileSelected: '已选择', cleaningTitle: '正在清理…', expiresNotice: '请及时下载：清理后的文件会在 10 分钟后删除。', synthidLabel: 'Claude 电子水印检测：', synthidSuffix: '疑似含水印', synthidTooltip: `❓ 什么是 Claude 电子水印？\nClaude 等 AI 在生成文字时，会悄悄调整用词的统计规律，\n形成一种肉眼看不见、复制粘贴也无法去除的“统计型水印”。\n这个分数代表我们检测到这段文字“像是带有这类水印”的可能性。\n注意：这是概率判断，不是 100% 准确，仅供参考。`, neutralizeSynthid: '🔶 清除 Claude 电子水印（将会修改文字内容，请谨慎使用）', neutralizeSynthidTip: `❓ 清除原理与风险说明\n\n【什么是 Claude 电子水印】\nClaude 生成文字时会在词语选择上留下统计规律，\n形成肉眼不可见的“数字指纹”。普通复制粘贴无法去除。\n\n【我们如何清除】\n1. 用合法的不同宽度空白符替换普通空格，打乱 AI 水印的 Token 边界\n2. 智能识别文中的动词和形容词，用同义词进行局部替换\n\n【重要提示】\n⚠️ 这会对文字措辞造成轻微改动（语义不变，但个别用词会有差异）\n⚠️ 清除效果是概率性的，不保证 100% 消除\n⚠️ 请在确认可以接受文字被修改后再勾选此选项`, textFileModeNotice: '文本文件已清理并可直接下载。'
   },
   es: { brandTitle: 'Eliminador de marcas de agua IA', headline: 'Elimina marcas de agua y rastros ocultos ahora.', subtitle: 'Para marcas visibles y electrónicas de Claude, ChatGPT/OpenAI, Gemini y más: C2PA, EXIF/XMP, Unicode invisible y metadatos.', chooseFile: 'Elegir archivo', cleanDownload: 'Limpiar y descargar', cleanText: 'Limpiar texto', resultLabel: 'Resultado', readyTitle: 'Listo para limpiar', download: 'Descargar' },
   hi: { brandTitle: 'AI वॉटरमार्क रिमूवर', headline: 'वॉटरमार्क और छिपे निशान अभी हटाएँ।', subtitle: 'Claude, ChatGPT/OpenAI, Gemini आदि के दिखने वाले और छिपे AI watermark, C2PA, EXIF/XMP, invisible Unicode और metadata साफ़ करें।', chooseFile: 'फ़ाइल चुनें', cleanDownload: 'साफ़ करें और डाउनलोड करें', cleanText: 'टेक्स्ट साफ़ करें', resultLabel: 'परिणाम', readyTitle: 'साफ़ करने के लिए तैयार', download: 'डाउनलोड' },
@@ -70,6 +70,8 @@ const fileLabel = document.querySelector('#fileLabel');
 const cleanTextBtn = document.querySelector('#cleanTextBtn');
 const copyTextBtn = document.querySelector('#copyTextBtn');
 const textInput = document.querySelector('#textInput');
+const fileNeutralizeToggle = document.querySelector('#fileNeutralizeSynthid');
+const textNeutralizeToggle = document.querySelector('#textNeutralizeSynthid');
 const tooltipPopover = document.createElement('div');
 tooltipPopover.className = 'tooltip-popover';
 document.body.append(tooltipPopover);
@@ -77,12 +79,15 @@ const downloadLink = document.querySelector('#downloadLink');
 const expiryNotice = document.querySelector('#expiryNotice');
 const textSuccess = document.querySelector('#textSuccess');
 const resultTitle = document.querySelector('#resultTitle');
+const synthidRow = document.querySelector('#synthidRow');
+const synthidScoreValue = document.querySelector('#synthidScoreValue');
 const steps = Array.from(document.querySelectorAll('#steps li'));
 const clearList = document.querySelector('#clearList');
 const removedCount = document.querySelector('#removedCount');
 const traceTypes = document.querySelector('#traceTypes');
 const sessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 const pendingUmamiEvents = [];
+let currentBlobUrl = null;
 
 function t(key) { return dictionary[key] || reportCopy.zh[key] || fallback[key] || key; }
 
@@ -142,6 +147,17 @@ function getFileKind(file) {
   return 'other';
 }
 
+function isTextLikeFile(file) {
+  return getFileKind(file) === 'text';
+}
+
+function buildTextDownloadName(name = 'cleaned.txt') {
+  const parts = String(name).split('.');
+  const extension = parts.length > 1 ? parts.pop() : 'txt';
+  const stem = parts.join('.') || 'cleaned';
+  return `${stem}.cleaned.${extension}`;
+}
+
 function getSelectedFileMeta() {
   const file = fileInput.files?.[0];
   if (!file) return { has_file: false };
@@ -162,6 +178,7 @@ function getFileFormOptions() {
     nfkc: fileForm.elements.nfkc?.checked ? 'true' : 'false',
     aggressive_homoglyphs: fileForm.elements.aggressive_homoglyphs?.checked ? 'true' : 'false',
     keep_non_ai_metadata: fileForm.elements.keep_non_ai_metadata?.checked ? 'true' : 'false',
+    neutralize_synthid: fileNeutralizeToggle?.checked ? 'true' : 'false',
   };
 }
 
@@ -229,11 +246,39 @@ function setSteps(state) {
   });
 }
 
+function revokeCurrentBlobUrl() {
+  if (!currentBlobUrl) return;
+  URL.revokeObjectURL(currentBlobUrl);
+  currentBlobUrl = null;
+}
+
+function hideSynthidResult() {
+  synthidRow?.classList.add('hidden');
+  if (synthidScoreValue) {
+    synthidScoreValue.textContent = '0%';
+    synthidScoreValue.className = 'synthid-score low';
+  }
+}
+
+function showSynthidResult(result) {
+  if (!synthidRow || !synthidScoreValue || !result || typeof result.score !== 'number') {
+    hideSynthidResult();
+    return;
+  }
+  const score = Math.max(0, Math.min(100, Number(result.score || 0)));
+  const tone = score < 30 ? 'low' : (score < 70 ? 'medium' : 'high');
+  synthidScoreValue.textContent = `${Math.round(score)}%`;
+  synthidScoreValue.className = `synthid-score ${tone}`;
+  synthidRow.classList.remove('hidden');
+}
+
 function resetDownload() {
+  revokeCurrentBlobUrl();
   downloadLink.classList.add('hidden');
   downloadLink.removeAttribute('href');
   expiryNotice.classList.add('hidden');
   textSuccess.classList.add('hidden');
+  hideSynthidResult();
   document.querySelector('.result-card')?.classList.remove('expanded');
 }
 
@@ -243,6 +288,36 @@ function formDataWithBooleans(form) {
     data.set(name, form.elements[name].checked ? 'true' : 'false');
   });
   return data;
+}
+
+function buildTextFormData(text, options = {}) {
+  const data = new FormData();
+  data.set('text', text || '');
+  Object.entries(options).forEach(([key, value]) => {
+    data.set(key, value);
+  });
+  return data;
+}
+
+async function runSynthidPipeline(text, shouldNeutralize) {
+  const extras = {};
+  let finalText = text || '';
+  let synthid = null;
+
+  if (shouldNeutralize) {
+    const neutralized = await postForm('/neutralize_synthid', buildTextFormData(finalText));
+    finalText = neutralized.text || finalText;
+    synthid = neutralized.after || null;
+    extras.synthid_neutralize = neutralized.stats || {};
+    extras.synthid_detection_before = neutralized.before || null;
+    extras.synthid_detection_after = neutralized.after || null;
+  }
+
+  if (!synthid) {
+    synthid = await postForm('/detect_synthid', buildTextFormData(finalText));
+  }
+
+  return { finalText, synthid, reportExtras: extras };
 }
 
 async function postForm(url, data) {
@@ -339,6 +414,7 @@ function renderResult(payload, mode = 'clean') {
     ${summary.report.notes ? `<p class="raw-details">${escapeHtml(summary.report.notes)}</p>` : ''}
     <details><summary>${escapeHtml(t('rawReport'))}</summary><pre class="raw-details">${escapeHtml(JSON.stringify(summary.report, null, 2))}</pre></details>
   `;
+  showSynthidResult(payload.synthid);
   setSteps(3);
   textSuccess.classList.toggle('hidden', mode !== 'text');
   expiryNotice.classList.toggle('hidden', !summary.downloadUrl);
@@ -351,6 +427,7 @@ function renderReady() {
   clearList.innerHTML = `<p>${escapeHtml(t('readyMessage'))}</p><ul class="ready-traces"><li><strong>Unicode</strong><span>${escapeHtml(t('targetUnicode'))}</span></li><li><strong>C2PA / EXIF / XMP</strong><span>${escapeHtml(t('targetMetadata'))}</span></li><li><strong>PDF / DOCX</strong><span>${escapeHtml(t('targetDocs'))}</span></li></ul>`;
   removedCount.textContent = '0';
   traceTypes.textContent = '0';
+  hideSynthidResult();
   setSteps(0);
   resetDownload();
 }
@@ -361,6 +438,7 @@ function renderMessage(title, message, step = 1) {
   clearList.innerHTML = `<p>${escapeHtml(message)}</p>`;
   removedCount.textContent = '0';
   traceTypes.textContent = '0';
+  hideSynthidResult();
   setSteps(step);
 }
 
@@ -391,6 +469,7 @@ fileInput.addEventListener('change', () => {
 fileForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!fileForm.reportValidity()) return;
+  const file = fileInput.files?.[0];
   const fileMeta = getSelectedFileMeta();
   const formOptions = getFileFormOptions();
   trackEvent('clean_watermark_clicked', {
@@ -400,6 +479,37 @@ fileForm.addEventListener('submit', async (event) => {
   });
   renderMessage(t('cleaningTitle'), t('cleaning'), 2);
   try {
+    if (file && isTextLikeFile(file)) {
+      const textPayload = await postForm('/api/clean-text', buildTextFormData(await file.text(), {
+        nfkc: formOptions.nfkc,
+        aggressive_homoglyphs: formOptions.aggressive_homoglyphs,
+      }));
+      const synthidPipeline = await runSynthidPipeline(textPayload.cleaned_text || '', fileNeutralizeToggle?.checked);
+      const payload = {
+        ...textPayload,
+        report: {
+          ...(textPayload.report || {}),
+          ...synthidPipeline.reportExtras,
+        },
+        synthid: synthidPipeline.synthid,
+      };
+      const summary = renderResult(payload, 'clean');
+      currentBlobUrl = URL.createObjectURL(new Blob([synthidPipeline.finalText], { type: 'text/plain;charset=utf-8' }));
+      downloadLink.href = currentBlobUrl;
+      downloadLink.download = buildTextDownloadName(file.name);
+      downloadLink.classList.remove('hidden');
+      expiryNotice.classList.add('hidden');
+      textSuccess.classList.add('hidden');
+      trackEvent('clean_succeeded', {
+        category: 'file',
+        ...fileMeta,
+        ...formOptions,
+        ...getSummaryMetrics(summary),
+        synthid_score: synthidPipeline.synthid?.score ?? 0,
+      });
+      return;
+    }
+
     const payload = await postForm('/api/clean', formDataWithBooleans(fileForm));
     const summary = renderResult(payload, 'clean');
     trackEvent('clean_succeeded', {
@@ -426,31 +536,42 @@ fileForm.addEventListener('submit', async (event) => {
 });
 
 cleanTextBtn.addEventListener('click', async () => {
-  const data = new FormData();
   const textValue = textInput.value;
   const textMetrics = {
     category: 'text',
     text_length_bucket: bucketTextLength(textValue),
     text_length: textValue.length,
     line_count: textValue ? textValue.split(/\n/).length : 0,
+    neutralize_synthid: textNeutralizeToggle?.checked ? 'true' : 'false',
   };
-  data.set('text', textValue);
-  data.set('nfkc', 'false');
-  data.set('aggressive_homoglyphs', 'true');
   trackEvent('clean_watermark_clicked', textMetrics);
   renderMessage(t('cleaningTitle'), t('cleaningText'), 2);
   try {
-    const payload = await postForm('/api/clean-text', data);
-    textInput.value = payload.cleaned_text || '';
-    const summary = renderResult(payload, 'text');
+    const payload = await postForm('/api/clean-text', buildTextFormData(textValue, {
+      nfkc: 'false',
+      aggressive_homoglyphs: 'true',
+    }));
+    const synthidPipeline = await runSynthidPipeline(payload.cleaned_text || '', textNeutralizeToggle?.checked);
+    textInput.value = synthidPipeline.finalText;
+    const finalPayload = {
+      ...payload,
+      report: {
+        ...(payload.report || {}),
+        ...synthidPipeline.reportExtras,
+      },
+      synthid: synthidPipeline.synthid,
+    };
+    const summary = renderResult(finalPayload, 'text');
     trackEvent('clean_succeeded', {
       ...textMetrics,
       ...getSummaryMetrics(summary),
+      synthid_score: synthidPipeline.synthid?.score ?? 0,
     });
     trackEvent('text_clean_succeeded', {
       ...textMetrics,
       ...getSummaryMetrics(summary),
       cleaned_text_length: textInput.value.length,
+      synthid_score: synthidPipeline.synthid?.score ?? 0,
     });
   } catch (error) {
     trackEvent('clean_failed', {

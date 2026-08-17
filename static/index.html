@@ -82,6 +82,13 @@
             <label><input type="checkbox" name="aggressive_homoglyphs" /> <span data-i18n="deepClean">Deep text clean</span><button class="tip" type="button" data-tooltip-i18n="deepCleanTip" aria-label="Explain deep text clean">?</button></label>
             <label><input type="checkbox" name="keep_non_ai_metadata" /> <span data-i18n="keepMetadata">Keep safe image metadata</span><button class="tip" type="button" data-tooltip-i18n="keepMetadataTip" aria-label="Explain safe image metadata">?</button></label>
           </div>
+          <div class="warning-toggle">
+            <label>
+              <input id="fileNeutralizeSynthid" name="neutralize_synthid" type="checkbox" />
+              <span data-i18n="neutralizeSynthid">🔶 清除 Claude 电子水印（将会修改文字内容，请谨慎使用）</span>
+              <button class="tip" type="button" data-tooltip-i18n="neutralizeSynthidTip" aria-label="Explain Claude watermark neutralization">?</button>
+            </label>
+          </div>
           <div class="action-row single-action">
             <button type="submit" class="primary clean-main" data-i18n="cleanDownload">Clean watermark</button>
           </div>
@@ -89,6 +96,13 @@
 
         <section class="tool-panel" data-panel="text">
           <textarea id="textInput" data-i18n-placeholder="textPlaceholder" placeholder="Paste text here..."></textarea>
+          <div class="warning-toggle">
+            <label>
+              <input id="textNeutralizeSynthid" type="checkbox" />
+              <span data-i18n="neutralizeSynthid">🔶 清除 Claude 电子水印（将会修改文字内容，请谨慎使用）</span>
+              <button class="tip" type="button" data-tooltip-i18n="neutralizeSynthidTip" aria-label="Explain Claude watermark neutralization">?</button>
+            </label>
+          </div>
           <div class="action-row">
             <button id="cleanTextBtn" class="primary" type="button" data-i18n="cleanText">Clean text</button>
             <button id="copyTextBtn" type="button" data-i18n="copyResult">Copy result</button>
@@ -124,6 +138,14 @@
             <li><strong>C2PA / EXIF / XMP</strong><span data-i18n="targetMetadata">Metadata</span></li>
             <li><strong>PDF / DOCX</strong><span data-i18n="targetDocs">Document traces</span></li>
           </ul>
+        </div>
+        <div id="synthidRow" class="synthid-row hidden">
+          <div class="synthid-main">
+            <span data-i18n="synthidLabel">Claude 电子水印检测：</span>
+            <strong id="synthidScoreValue" class="synthid-score low">0%</strong>
+            <span data-i18n="synthidSuffix">疑似含水印</span>
+          </div>
+          <button class="tip" type="button" data-tooltip-i18n="synthidTooltip" aria-label="Explain SynthID score">?</button>
         </div>
       </aside>
     </section>
