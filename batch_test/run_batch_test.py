@@ -22,7 +22,7 @@ DOWNLOAD_DIR = ROOT / "batch-test-downloads"
 RESULTS_DIR = ROOT / "batch-test-results"
 RESULTS_JSON = RESULTS_DIR / "results.json"
 REPORT_MD = RESULTS_DIR / "report.md"
-SITE_URL = "https://watermarks-remover-production.up.railway.app/zh"
+SITE_URL = "https://watermarks-remover.aiclear.ai/zh"
 
 sys.path.insert(0, str(SCRIPTS))
 

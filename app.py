@@ -27,9 +27,9 @@ from synthid_text import detect_synthid_likelihood, neutralize_synthid_text  # n
 MAX_UPLOAD_BYTES = 32 * 1024 * 1024
 OUTPUT_RETENTION_SECONDS = 10 * 60
 OUTPUTS = Path(tempfile.gettempdir()) / "watermarks-remover-outputs"
-SITE_URL = "https://watermarks-remover-production.up.railway.app"
+SITE_URL = "https://watermarks-remover.aiclear.ai"
 BRAND_NAME = "AI Watermarks Remover"
-ASSET_VERSION = "20260818-1228"
+ASSET_VERSION = "20260818-1310"
 HTML_HEADERS = {
     "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
     "Pragma": "no-cache",
