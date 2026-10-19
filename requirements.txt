@@ -3,7 +3,7 @@ uvicorn[standard]==0.34.0
 python-multipart==0.0.20
 numpy==1.26.4
 opencv-python-headless==4.10.0.84
-pypdf==6.16.1
+pypdf==6.20.1
 spacy==3.8.7
 nltk==3.9.2
 langdetect==1.0.9
